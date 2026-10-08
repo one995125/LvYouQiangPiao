@@ -1,0 +1,47 @@
+<page-header back title="关于拾景" />
+
+<view class="page page--plain px">
+  <view class="brand">
+    <view class="brand__mark">
+      <tone-cover tone="jade" radius="40rpx">
+        <view class="brand__mark-inner">拾</view>
+      </tone-cover>
+    </view>
+    <text class="brand__name">{{appName}}</text>
+    <text class="brand__slogan">{{slogan}}</text>
+  </view>
+
+  <view class="card sec">
+    <text class="sec__title">我们做什么</text>
+    <text class="sec__p">拾景将分散在各处的景区官方购票入口整理到一起，按省份浏览、按热度或游客量排序，并配以攻略与避雷信息。你可以收藏景区、回看浏览历史、加入行程，抢不到票时随时回来再试。</text>
+  </view>
+
+  <view class="card sec">
+    <text class="sec__title">免责声明</text>
+    <text class="sec__p">1. 拾景不参与任何售票环节，不收取任何费用，所有购票均在景区官方渠道完成。</text>
+    <text class="sec__p">2. 游客量、门票价格、放票规则等为公开信息整理的参考值，可能存在滞后，请以景区官方公布为准。</text>
+    <text class="sec__p">3. 标注「待核验」的购票渠道尚未经人工确认，请在跳转后认准官方认证标识。</text>
+    <text class="sec__p">4. 攻略为拾景整理的出行参考，不代表景区官方意见。</text>
+  </view>
+
+  <view class="card sec">
+    <text class="sec__title">隐私说明</text>
+    <text class="sec__p">仅在你主动登录时获取微信匿名标识（openid）用于同步收藏、浏览历史与行程；浏览历史只记录景区及最近浏览时间，可在浏览历史页一键清空。头像昵称由你自愿填写，仅用于个人资料展示，不会出现在公开攻略中。行程备注仅本人可见；景区资料纠错仅用于人工核对，均不会公开展示。我们不获取手机号、位置、通讯录等信息。</text>
+  </view>
+
+  <view wx:if="{{cloud && openid && !adminVisible}}" class="card sec">
+    <text class="sec__title">我的账号标识</text>
+    <text class="sec__p" bindtap="onCopyOpenid">OpenID：{{openid}}（点击复制，仅供本人配置云端管理员白名单）</text>
+  </view>
+
+  <view wx:if="{{adminVisible}}" class="card sec">
+    <text class="sec__title">管理员 · 云数据</text>
+    <text class="sec__p">当前环境：{{envId}}</text>
+    <text class="sec__p" bindtap="onCopyOpenid">我的 OpenID：{{openid || '未在本地登录'}}（点击复制）</text>
+    <view class="btn-primary import" bindtap="toAdmin">进入资料维护中心</view>
+    <view class="btn-ghost import" bindtap="toAdminGuides">维护拾景攻略</view>
+    <view class="btn-ghost import" hover-class="tap-hover" bindtap="onImport">
+      {{importing ? '导入中 ' + progress : '初始化云数据（' + scenicCount + ' 个景区）'}}
+    </view>
+  </view>
+</view>

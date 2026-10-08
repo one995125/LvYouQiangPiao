@@ -1,0 +1,201 @@
+/**
+ * 拾景 · 全局设计令牌
+ * 色彩取自中国传统色：宣纸、墨、黛青、赭石、朱砂，低饱和以营造「呼吸感」。
+ * 组件默认样式隔离，统一通过 CSS 变量共享令牌。
+ */
+page {
+  --paper: #f4f1ea;
+  --paper-deep: #ebe6db;
+  --card: #fdfcf9;
+  --ink: #1e201f;
+  --ink-2: #4b504d;
+  --ink-3: #8d918d;
+  --ink-4: #b9bbb6;
+  --line: rgba(30, 32, 31, 0.07);
+  --jade: #2f5a51;
+  --jade-soft: #e2ebe6;
+  --gold: #a9844f;
+  --gold-soft: #f2e9da;
+  --cinnabar: #b0513b;
+  --cinnabar-soft: #f5e3dc;
+  --shadow-soft: 0 12rpx 40rpx rgba(46, 42, 32, 0.06);
+  --shadow-float: 0 20rpx 60rpx rgba(46, 42, 32, 0.12);
+  --radius-l: 36rpx;
+  --radius-m: 24rpx;
+  --radius-s: 14rpx;
+  --tabbar-space: calc(150rpx + env(safe-area-inset-bottom));
+
+  /* TDesign 主题映射 */
+  --td-brand-color: #2f5a51;
+  --td-brand-color-active: #24473f;
+  --td-brand-color-light: #e2ebe6;
+  --td-primary-color: #2f5a51;
+  --td-error-color: #b0513b;
+  --td-warning-color: #a9844f;
+  --td-popup-bg-color: #fdfcf9;
+  --td-popup-border-radius: 40rpx;
+
+  background: var(--paper);
+  color: var(--ink);
+  font-family: -apple-system, 'PingFang SC', 'Helvetica Neue', 'Microsoft YaHei', sans-serif;
+  font-size: 28rpx;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+view,
+text,
+scroll-view,
+input,
+textarea,
+button {
+  box-sizing: border-box;
+}
+
+button {
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  line-height: inherit;
+  font-size: inherit;
+  color: inherit;
+  border-radius: 0;
+  text-align: inherit;
+}
+button::after {
+  border: none;
+}
+
+/* ───── 通用排版 ───── */
+.page {
+  min-height: 100vh;
+  padding-bottom: var(--tabbar-space);
+}
+.page--plain {
+  padding-bottom: calc(60rpx + env(safe-area-inset-bottom));
+}
+.px {
+  padding-left: 40rpx;
+  padding-right: 40rpx;
+}
+
+.eyebrow {
+  font-size: 20rpx;
+  letter-spacing: 6rpx;
+  color: var(--ink-3);
+  text-transform: uppercase;
+}
+.display {
+  font-size: 60rpx;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: 2rpx;
+  color: var(--ink);
+  white-space: pre-line;
+}
+.section-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin: 56rpx 0 24rpx;
+}
+.section-title__main {
+  font-size: 34rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+}
+.section-title__sub {
+  font-size: 22rpx;
+  color: var(--ink-3);
+}
+.muted {
+  color: var(--ink-3);
+}
+.num {
+  font-family: 'DIN Alternate', 'Helvetica Neue', Arial, sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ───── 通用胶囊 / 标签 ───── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 44rpx;
+  padding: 0 18rpx;
+  border-radius: 999rpx;
+  font-size: 20rpx;
+  letter-spacing: 1rpx;
+  background: var(--paper-deep);
+  color: var(--ink-2);
+}
+.chip--jade {
+  background: var(--jade-soft);
+  color: var(--jade);
+}
+.chip--gold {
+  background: var(--gold-soft);
+  color: var(--gold);
+}
+.chip--cinnabar {
+  background: var(--cinnabar-soft);
+  color: var(--cinnabar);
+}
+
+.card {
+  background: var(--card);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-soft);
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96rpx;
+  border-radius: 999rpx;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 30rpx;
+  font-weight: 500;
+  letter-spacing: 2rpx;
+}
+.btn-primary.is-disabled {
+  opacity: 0.4;
+}
+.btn-ghost {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 96rpx;
+  border-radius: 999rpx;
+  border: 1rpx solid var(--line);
+  background: var(--card);
+  color: var(--ink);
+  font-size: 30rpx;
+}
+
+.tap {
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.tap-hover {
+  transform: scale(0.98);
+  opacity: 0.85;
+}
+
+.fade-in {
+  animation: fadeUp 0.5s ease both;
+}
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.safe-bottom {
+  height: env(safe-area-inset-bottom);
+}

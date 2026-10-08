@@ -1,0 +1,94 @@
+.export-layer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 260;
+  display: flex;
+  align-items: flex-end;
+  background: rgba(30, 32, 31, 0.38);
+}
+.export-sheet {
+  width: 100%;
+  max-height: 86vh;
+  padding: 16rpx 40rpx 28rpx;
+  overflow: hidden;
+  border-radius: 44rpx 44rpx 0 0;
+  background: var(--card);
+  box-shadow: 0 -18rpx 60rpx rgba(30, 32, 31, 0.12);
+  box-sizing: border-box;
+}
+.export-sheet__handle {
+  width: 72rpx;
+  height: 8rpx;
+  margin: 0 auto 24rpx;
+  border-radius: 999rpx;
+  background: var(--paper-deep);
+}
+.export-sheet__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.export-sheet__heading {
+  min-width: 0;
+}
+.export-sheet__title {
+  display: block;
+  margin-top: 6rpx;
+  font-size: 38rpx;
+  font-weight: 600;
+}
+.export-sheet__close {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 64rpx;
+  height: 64rpx;
+  margin-left: 24rpx;
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink-3);
+}
+.export-sheet__desc {
+  display: block;
+  margin-top: 16rpx;
+  color: var(--ink-3);
+  font-size: 23rpx;
+  line-height: 1.65;
+}
+.export-sheet__preview {
+  height: 48vh;
+  max-height: 760rpx;
+  margin-top: 22rpx;
+  padding: 24rpx;
+  border: 1rpx solid var(--line);
+  border-radius: 26rpx;
+  background: var(--paper);
+  box-sizing: border-box;
+}
+.export-sheet__text {
+  display: block;
+  color: var(--ink-2);
+  font-size: 24rpx;
+  line-height: 1.75;
+  white-space: pre-wrap;
+  word-break: break-all;
+  user-select: text;
+}
+.export-sheet__copy {
+  width: 100%;
+  margin-top: 24rpx;
+}
+.export-sheet__copy t-icon {
+  margin-right: 10rpx;
+}
+.export-sheet__hint {
+  display: block;
+  margin-top: 14rpx;
+  color: var(--ink-4);
+  font-size: 20rpx;
+  text-align: center;
+}

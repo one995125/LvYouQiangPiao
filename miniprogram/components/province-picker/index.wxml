@@ -1,0 +1,34 @@
+<t-popup visible="{{visible}}" placement="bottom" bind:visible-change="onVisibleChange">
+  <view class="pp">
+    <view class="pp__handle"></view>
+    <view class="pp__head">
+      <view>
+        <text class="eyebrow">DESTINATION</text>
+        <view class="pp__title">去哪里看看</view>
+      </view>
+      <view class="pp__close" bindtap="onClose">
+        <t-icon name="close" size="36rpx" />
+      </view>
+    </view>
+    <scroll-view scroll-y class="pp__scroll" enhanced show-scrollbar="{{false}}">
+      <view wx:for="{{groups}}" wx:key="region" class="pp__group">
+        <text class="pp__region">{{item.region}}</text>
+        <view class="pp__grid">
+          <view
+            wx:for="{{item.items}}"
+            wx:for-item="p"
+            wx:key="code"
+            class="pp__item {{p.code === current ? 'is-active' : ''}} {{p.count === 0 ? 'is-empty' : ''}}"
+            data-code="{{p.code}}"
+            hover-class="tap-hover"
+            bindtap="onSelect"
+          >
+            <text class="pp__name">{{p.name}}</text>
+            <text wx:if="{{p.count > 0}}" class="pp__count num">{{p.count}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="pp__foot">数字为已收录景区数 · 持续更新中</view>
+    </scroll-view>
+  </view>
+</t-popup>

@@ -1,0 +1,94 @@
+<page-header back title="编辑景区资料" />
+<view class="page page--plain px editor">
+  <text class="eyebrow">SCENIC DATA · EDITOR</text>
+  <text class="editor__title">{{name || '景区资料'}}</text>
+  <text class="editor__intro">服务端版本 {{revision}}。所有改动在点击“保存云端”后才生效；未核验信息请保持空白。</text>
+  <view wx:if="{{error}}" class="editor__error">{{error}}</view>
+  <text wx:if="{{loading}}" class="editor__loading">正在读取云端资料…</text>
+
+  <block wx:if="{{!loading && name}}">
+    <view class="card editor__section">
+      <text class="editor__section-title">所在位置</text>
+      <text class="editor__help">仅填写已核验的 GCJ-02 坐标；经纬度必须同时填写。三项留空并保存即可清空，不要根据景区名称猜测。</text>
+      <view class="field"><text>地址</text><input value="{{address}}" data-section="top" data-key="address" bindinput="onField" maxlength="200" placeholder="已核验的景区地址；可留空" /></view>
+      <view class="field"><text>纬度（lat）</text><input value="{{latitudeText}}" data-section="top" data-key="latitudeText" bindinput="onField" maxlength="24" placeholder="-90 到 90" /></view>
+      <view class="field"><text>经度（lng）</text><input value="{{longitudeText}}" data-section="top" data-key="longitudeText" bindinput="onField" maxlength="24" placeholder="-180 到 180" /></view>
+    </view>
+
+    <view class="card editor__section">
+      <text class="editor__section-title">预约规则</text>
+      <text class="editor__help">未知字段选“尚未核验”，不要根据经验推测。</text>
+      <view class="field"><text>旧版说明文案</text><textarea value="{{booking}}" data-section="top" data-key="booking" bindinput="onField" maxlength="1000" auto-height placeholder="景区公告的文字摘录" /></view>
+      <view class="field"><text>是否需要预约</text><picker range="{{booleanChoices}}" value="{{ruleFlags.required}}" data-section="rule" data-key="required" bindchange="onChoice"><view class="field__pick">{{booleanChoices[ruleFlags.required]}} ›</view></picker></view>
+      <view class="field"><text>提前天数</text><input type="number" value="{{advanceDaysText}}" data-section="top" data-key="advanceDaysText" bindinput="onField" placeholder="空白表示未知" /></view>
+      <view class="field"><text>放票时间</text><input value="{{rule.releaseTime}}" data-section="rule" data-key="releaseTime" bindinput="onField" placeholder="HH:mm；空白表示未知" /></view>
+      <view class="field"><text>是否实名</text><picker range="{{booleanChoices}}" value="{{ruleFlags.realName}}" data-section="rule" data-key="realName" bindchange="onChoice"><view class="field__pick">{{booleanChoices[ruleFlags.realName]}} ›</view></picker></view>
+      <view class="field"><text>入园证件</text><input value="{{documentsText}}" data-section="top" data-key="documentsText" bindinput="onField" placeholder="多项用顿号分隔；不存证件号码" /></view>
+      <view class="field"><text>是否分时段</text><picker range="{{booleanChoices}}" value="{{ruleFlags.timeSlotRequired}}" data-section="rule" data-key="timeSlotRequired" bindchange="onChoice"><view class="field__pick">{{booleanChoices[ruleFlags.timeSlotRequired]}} ›</view></picker></view>
+      <view class="field"><text>退改规则</text><textarea value="{{rule.refundRule}}" data-section="rule" data-key="refundRule" bindinput="onField" maxlength="500" auto-height placeholder="以官方公告为准" /></view>
+      <view class="field"><text>特殊人群规则</text><textarea value="{{rule.audienceRule}}" data-section="rule" data-key="audienceRule" bindinput="onField" maxlength="500" auto-height placeholder="儿童、老人等已核验规则" /></view>
+      <view class="field"><text>补充说明</text><textarea value="{{rule.note}}" data-section="rule" data-key="note" bindinput="onField" maxlength="500" auto-height placeholder="其他已核验内容" /></view>
+    </view>
+
+    <view class="card editor__section">
+      <text class="editor__section-title">官方服务渠道</text>
+      <text class="editor__help">“已核验”必须填写来源名称和核验日期。小程序直达还需真实短链或 AppID + 页面路径。</text>
+      <view wx:for="{{entries}}" wx:key="id" class="editor__item">
+        <view class="editor__item-head"><text>渠道 {{index + 1}}</text><text class="editor__remove" data-section="entries" data-index="{{index}}" bindtap="onRemove">移除</text></view>
+        <view class="field"><text>用途</text><picker range="{{purposes}}" value="{{item.purposeIndex}}" data-section="entries" data-index="{{index}}" data-key="purpose" bindchange="onChoice"><view class="field__pick">{{purposes[item.purposeIndex]}} ›</view></picker></view>
+        <view class="field"><text>类型</text><picker range="{{channelTypes}}" value="{{item.typeIndex}}" data-section="entries" data-index="{{index}}" data-key="type" bindchange="onChoice"><view class="field__pick">{{channelTypes[item.typeIndex]}} ›</view></picker></view>
+        <view class="field"><text>渠道名称</text><input value="{{item.name}}" data-section="entries" data-index="{{index}}" data-key="name" bindinput="onField" placeholder="官方渠道全称" /></view>
+        <block wx:if="{{item.type === 'miniprogram'}}">
+          <view class="field"><text>小程序短链</text><input value="{{item.shortLink}}" data-section="entries" data-index="{{index}}" data-key="shortLink" bindinput="onField" placeholder="#小程序://名称/…" /></view>
+          <view class="field"><text>AppID</text><input value="{{item.appId}}" data-section="entries" data-index="{{index}}" data-key="appId" bindinput="onField" placeholder="wx…；未核实可留空" /></view>
+          <view class="field"><text>页面路径</text><input value="{{item.path}}" data-section="entries" data-index="{{index}}" data-key="path" bindinput="onField" placeholder="pages/…" /></view>
+        </block>
+        <view wx:if="{{item.type === 'web'}}" class="field"><text>官网 HTTPS 地址</text><input value="{{item.url}}" data-section="entries" data-index="{{index}}" data-key="url" bindinput="onField" placeholder="https://…" /></view>
+        <view wx:if="{{item.type === 'phone'}}" class="field"><text>官方电话</text><input value="{{item.phone}}" data-section="entries" data-index="{{index}}" data-key="phone" bindinput="onField" placeholder="已核验电话" /></view>
+        <view class="field field--switch"><text>已人工核验</text><switch checked="{{item.verified}}" color="#2f5a51" data-index="{{index}}" bindchange="onVerified" /></view>
+        <view class="field"><text>来源名称</text><input value="{{item.sourceName}}" data-section="entries" data-index="{{index}}" data-key="sourceName" bindinput="onField" placeholder="景区官网或官方账号" /></view>
+        <view class="field"><text>来源地址</text><input value="{{item.sourceUrl}}" data-section="entries" data-index="{{index}}" data-key="sourceUrl" bindinput="onField" placeholder="https://… 可留空" /></view>
+        <view class="field"><text>核验日期</text><input value="{{item.checkedAt}}" data-section="entries" data-index="{{index}}" data-key="checkedAt" bindinput="onField" placeholder="YYYY-MM-DD" /></view>
+        <view class="field"><text>有效至</text><input value="{{item.validUntil}}" data-section="entries" data-index="{{index}}" data-key="validUntil" bindinput="onField" placeholder="YYYY-MM-DD；可留空" /></view>
+        <view class="field"><text>备注</text><textarea value="{{item.note}}" data-section="entries" data-index="{{index}}" data-key="note" bindinput="onField" maxlength="500" auto-height placeholder="核验条件或限制" /></view>
+      </view>
+      <view class="editor__add" data-section="entries" bindtap="onAdd">＋ 添加渠道</view>
+    </view>
+
+    <view class="card editor__section">
+      <text class="editor__section-title">资料来源</text>
+      <view wx:for="{{sources}}" wx:key="id" class="editor__item">
+        <view class="editor__item-head"><text>来源 {{index + 1}}</text><text class="editor__remove" data-section="sources" data-index="{{index}}" bindtap="onRemove">移除</text></view>
+        <view class="field"><text>来源名称</text><input value="{{item.name}}" data-section="sources" data-index="{{index}}" data-key="name" bindinput="onField" placeholder="官网/官方公告名称" /></view>
+        <view class="field"><text>来源地址</text><input value="{{item.url}}" data-section="sources" data-index="{{index}}" data-key="url" bindinput="onField" placeholder="https://…" /></view>
+        <view class="field"><text>核验日期</text><input value="{{item.checkedAt}}" data-section="sources" data-index="{{index}}" data-key="checkedAt" bindinput="onField" placeholder="YYYY-MM-DD" /></view>
+        <view class="field"><text>有效至</text><input value="{{item.validUntil}}" data-section="sources" data-index="{{index}}" data-key="validUntil" bindinput="onField" placeholder="YYYY-MM-DD；可留空" /></view>
+        <view class="field"><text>备注</text><textarea value="{{item.note}}" data-section="sources" data-index="{{index}}" data-key="note" bindinput="onField" maxlength="500" auto-height placeholder="来源的适用范围" /></view>
+      </view>
+      <view class="editor__add" data-section="sources" bindtap="onAdd">＋ 添加来源</view>
+    </view>
+
+    <view class="card editor__section">
+      <text class="editor__section-title">临时公告</text>
+      <text class="editor__help">过期公告在前台自动隐藏；请保留真实来源与日期。</text>
+      <view wx:for="{{notices}}" wx:key="id" class="editor__item">
+        <view class="editor__item-head"><text>公告 {{index + 1}}</text><text class="editor__remove" data-section="notices" data-index="{{index}}" bindtap="onRemove">移除</text></view>
+        <view class="field"><text>类型</text><picker range="{{noticeTypes}}" value="{{item.typeIndex}}" data-section="notices" data-index="{{index}}" data-key="type" bindchange="onChoice"><view class="field__pick">{{noticeTypes[item.typeIndex]}} ›</view></picker></view>
+        <view class="field"><text>标题</text><input value="{{item.title}}" data-section="notices" data-index="{{index}}" data-key="title" bindinput="onField" placeholder="简明说明情况" /></view>
+        <view class="field"><text>内容</text><textarea value="{{item.content}}" data-section="notices" data-index="{{index}}" data-key="content" bindinput="onField" maxlength="1000" auto-height placeholder="按官方公告准确填写" /></view>
+        <view class="field"><text>开始日期</text><input value="{{item.startAt}}" data-section="notices" data-index="{{index}}" data-key="startAt" bindinput="onField" placeholder="YYYY-MM-DD；可留空" /></view>
+        <view class="field"><text>结束日期</text><input value="{{item.endAt}}" data-section="notices" data-index="{{index}}" data-key="endAt" bindinput="onField" placeholder="YYYY-MM-DD；可留空" /></view>
+        <view class="field"><text>来源名称</text><input value="{{item.sourceName}}" data-section="notices" data-index="{{index}}" data-key="sourceName" bindinput="onField" placeholder="发布公告的官方机构" /></view>
+        <view class="field"><text>来源地址</text><input value="{{item.sourceUrl}}" data-section="notices" data-index="{{index}}" data-key="sourceUrl" bindinput="onField" placeholder="https://… 可留空" /></view>
+        <view class="field"><text>核验日期</text><input value="{{item.checkedAt}}" data-section="notices" data-index="{{index}}" data-key="checkedAt" bindinput="onField" placeholder="YYYY-MM-DD" /></view>
+      </view>
+      <view class="editor__add" data-section="notices" bindtap="onAdd">＋ 添加公告</view>
+    </view>
+
+    <view class="editor__actions">
+      <view class="btn-primary" bindtap="onSave">{{saving ? '保存中…' : '保存云端'}}</view>
+      <view class="btn-ghost" bindtap="onPreview">查看前台详情</view>
+    </view>
+    <text wx:if="{{savedAt}}" class="editor__saved">已保存 · {{savedAt}} · 版本 {{revision}}</text>
+  </block>
+</view>

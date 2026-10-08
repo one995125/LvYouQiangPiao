@@ -1,0 +1,9 @@
+{
+  "enableShareTimeline": true,
+  "usingComponents": {
+    "t-loading": "tdesign-miniprogram/loading/loading",
+    "guide-card": "/components/guide-card/index",
+    "trip-sheet": "/components/trip-sheet/index",
+    "reservation-planner": "/components/reservation-planner/index"
+  }
+}

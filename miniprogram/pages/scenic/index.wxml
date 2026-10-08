@@ -1,0 +1,246 @@
+<page-header back overlay theme="light" solid="{{solid}}" title="{{scenic.name}}" />
+
+<view wx:if="{{loading}}" class="loading">
+  <t-loading theme="dots" size="40rpx" />
+</view>
+
+<empty-state wx:elif="{{notFound}}" icon="error-circle" title="没有找到这个景区" desc="它可能已下线或链接有误" />
+
+<view wx:else class="page page--plain detail">
+  <!-- 封面 -->
+  <view class="hero">
+    <tone-cover tone="{{scenic.tone || ''}}" src="{{scenic.cover || ''}}" radius="0">
+      <view class="hero__inner">
+        <text class="hero__alias">{{scenic.alias}}</text>
+        <text class="hero__name">{{scenic.name}}</text>
+        <view class="hero__tags">
+          <text wx:if="{{scenic.level}}" class="hero__tag">{{scenic.level}}</text>
+          <text class="hero__tag">{{scenic.category}}</text>
+          <text class="hero__tag">{{provinceName}} · {{scenic.city}}</text>
+        </view>
+      </view>
+    </tone-cover>
+  </view>
+
+  <view class="sheet">
+    <!-- 指标 -->
+    <view class="stats">
+      <view wx:for="{{stats}}" wx:key="k" class="stats__item">
+        <view class="stats__v num">{{item.v}}<text class="stats__unit">{{item.unit}}</text></view>
+        <text class="stats__k">{{item.k}}</text>
+      </view>
+    </view>
+
+    <!-- 只展示当前有效的官方公告，过期后自动隐藏。 -->
+    <view wx:if="{{notices.length}}" class="notices">
+      <view wx:for="{{notices}}" wx:key="id" class="notice {{item.urgent ? 'notice--urgent' : ''}}">
+        <view class="notice__head">
+          <text class="notice__type">{{item.typeLabel}}</text>
+          <text class="notice__date">{{item.dateLabel}}</text>
+        </view>
+        <text class="notice__title">{{item.title}}</text>
+        <text class="notice__content">{{item.content}}</text>
+        <view class="notice__source">
+          <text>来源：{{item.sourceName}} · 核验 {{item.checkedAt}}</text>
+          <view wx:if="{{item.sourceUrl}}" data-index="{{index}}" bindtap="onCopyNoticeSource">复制来源</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 位置是独立信息层级，不与官方购票/预约入口混排；无已核验坐标时整个区域不渲染。 -->
+    <view wx:if="{{hasLocation}}" class="block card location-card">
+      <view class="location-card__icon"><t-icon name="location" size="36rpx" /></view>
+      <view class="location-card__body">
+        <text class="location-card__label">所在位置</text>
+        <text class="location-card__address">{{locationAddress}}</text>
+      </view>
+      <view class="location-card__action" hover-class="tap-hover" bindtap="onNavigate">
+        <text>导航到这里</text>
+        <t-icon name="chevron-right" size="28rpx" />
+      </view>
+    </view>
+
+    <!-- 购票须知 -->
+    <view id="official-channels" class="block card ticket">
+      <view class="ticket__head">
+        <view class="ticket__icon"><t-icon name="ticket" size="36rpx" /></view>
+        <view class="ticket__main">
+          <text class="ticket__label">官方服务渠道</text>
+          <text class="ticket__title">{{officialEntries.length}} 个入口</text>
+        </view>
+      </view>
+
+      <view class="channels">
+        <view wx:for="{{officialEntries}}" wx:key="id" class="channel">
+          <view class="channel__body" data-index="{{index}}" bindtap="onOpenEntry">
+            <view class="channel__line">
+              <text class="channel__purpose">{{item.purposeLabel}}</text>
+              <text class="channel__name">{{item.name}}</text>
+              <text wx:if="{{item.currentVerified}}" class="chip chip--jade channel__chip">已核验</text>
+              <text wx:elif="{{item.expired}}" class="chip chip--cinnabar channel__chip">核验已过期</text>
+              <text wx:elif="{{item.type !== 'none'}}" class="chip chip--gold channel__chip">待核验</text>
+            </view>
+            <text wx:if="{{item.note}}" class="channel__note">{{item.note}}</text>
+            <text wx:if="{{item.sourceName || item.checkedAt || item.validUntil}}" class="channel__meta">
+              {{item.sourceName || '来源待补充'}}{{item.checkedAt ? ' · 核验 ' + item.checkedAt : ''}}{{item.validUntil ? ' · 有效至 ' + item.validUntil : ''}}
+            </text>
+          </view>
+          <view class="channel__side">
+            <text class="channel__action" data-index="{{index}}" bindtap="onOpenEntry">{{item.actionLabel}}</text>
+            <view wx:if="{{item.type === 'miniprogram' || item.type === 'web'}}" class="channel__copy" data-index="{{index}}" catchtap="onCopyEntry">
+              <t-icon name="copy" size="28rpx" />
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <view class="ticket__rows">
+        <view wx:for="{{bookingRows}}" wx:key="key" class="ticket__row">
+          <text class="ticket__k">{{item.key}}</text>
+          <text class="ticket__v">{{item.value}}</text>
+        </view>
+        <view class="ticket__row">
+          <text class="ticket__k">景区开放</text>
+          <text class="ticket__v">{{scenic.openTime}}</text>
+        </view>
+        <view class="ticket__row">
+          <text class="ticket__k">建议游玩</text>
+          <text class="ticket__v">{{scenic.duration}}</text>
+        </view>
+      </view>
+      <view wx:if="{{trip}}" class="ticket__trip">
+        <t-icon name="calendar" size="28rpx" />
+        <text>已在行程中 · {{trip.date || '日期待定'}} · {{trip.status === 'pending' ? '待抢票' : trip.status === 'booked' ? '已购票' : '已出行'}}</text>
+      </view>
+    </view>
+
+    <view class="block">
+      <reservation-planner scenic="{{scenic}}" initial-date="{{trip.date || ''}}" />
+    </view>
+
+    <!-- 资料来源与核验记录：未录入时明确提示，不伪造来源。 -->
+    <view class="block source-card">
+      <view class="source-card__head">
+        <text class="block__title source-card__title">资料核验</text>
+        <text class="source-card__updated">更新于 {{scenic.updatedAt}}</text>
+      </view>
+      <text class="source-card__summary">{{sourceSummary}}</text>
+      <view wx:if="{{sourceList.length}}" class="source-list">
+        <view wx:for="{{sourceList}}" wx:key="id" class="source-item">
+          <text class="source-item__name">{{item.name}}</text>
+          <text wx:if="{{item.meta}}" class="source-item__meta">{{item.meta}}</text>
+          <text wx:if="{{item.note}}" class="source-item__note">{{item.note}}</text>
+        </view>
+      </view>
+      <text wx:else class="source-card__empty">暂未录入可追溯的资料来源，请以景区官方公告为准。</text>
+      <view class="source-card__feedback" bindtap="toCorrection">
+        <t-icon name="edit" size="28rpx" />
+        <text>信息有误？提交纠错</text>
+      </view>
+    </view>
+
+    <!-- 简介 -->
+    <view class="block">
+      <text class="block__title">关于这里</text>
+      <text class="intro">{{scenic.intro}}</text>
+      <view wx:if="{{scenic.highlights.length}}" class="highlights">
+        <text wx:for="{{scenic.highlights}}" wx:key="*this" class="highlight">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 攻略要点 -->
+    <view wx:if="{{scenic.tips.length}}" class="block">
+      <text class="block__title">游玩要点</text>
+      <view class="points">
+        <view wx:for="{{scenic.tips}}" wx:key="*this" class="point">
+          <text class="point__idx num">0{{index + 1}}</text>
+          <text class="point__text">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 避雷 -->
+    <view wx:if="{{scenic.pitfalls.length}}" class="block">
+      <view class="avoid">
+        <view class="avoid__head">
+          <t-icon name="error-circle" size="34rpx" />
+          <text>避雷提醒</text>
+        </view>
+        <view wx:for="{{scenic.pitfalls}}" wx:key="*this" class="avoid__item">{{item}}</view>
+      </view>
+    </view>
+
+    <!-- 相关攻略 -->
+    <view wx:if="{{guides.length}}" class="block">
+      <view class="section-title section-title--flush">
+        <text class="section-title__main">相关攻略</text>
+        <text class="section-title__sub" bindtap="toGuides">更多 ›</text>
+      </view>
+      <view wx:for="{{guides}}" wx:key="_id" class="guide-item">
+        <guide-card guide="{{item}}" />
+      </view>
+    </view>
+
+    <!-- 分享图只在本机 Canvas 生成；未生成或生成失败时，好友分享自动使用页面默认卡片。 -->
+    <view class="block card share-poster">
+      <view class="share-poster__head">
+        <view>
+          <text class="share-poster__eyebrow">SCENIC CARD</text>
+          <text class="share-poster__title">把这处景区分享出去</text>
+        </view>
+        <t-icon name="image" size="42rpx" />
+      </view>
+      <text class="share-poster__desc">生成宣纸色景区卡片，可保存到相册；拾景仅整理公开资料，不参与售票。</text>
+      <image wx:if="{{shareImageUrl}}" class="share-poster__preview" src="{{shareImageUrl}}" mode="widthFix" />
+      <view class="share-poster__actions">
+        <button class="share-poster__action share-poster__action--primary {{posterGenerating ? 'is-disabled' : ''}}" disabled="{{posterGenerating}}" bindtap="onGenerateSharePoster">
+          {{posterGenerating ? '正在生成…' : shareImageUrl ? '重新生成' : '生成分享图'}}
+        </button>
+        <button class="share-poster__action" disabled="{{posterGenerating}}" bindtap="onSaveSharePoster">保存到相册</button>
+        <button class="share-poster__action" open-type="share">发给好友</button>
+      </view>
+    </view>
+
+    <view class="note">
+      <view>数据更新于 {{scenic.updatedAt}} · 游客量、价格为公开信息整理的参考值</view>
+      <view>拾景不参与售票，不收取任何费用</view>
+    </view>
+  </view>
+
+  <!-- 底部操作栏 -->
+  <view class="bar">
+    <view class="bar__inner">
+      <view class="bar__btn {{fav ? 'is-on' : ''}}" bindtap="onFav">
+        <t-icon name="{{fav ? 'star-filled' : 'star'}}" size="40rpx" />
+        <text>{{fav ? '已收藏' : '收藏'}}</text>
+      </view>
+      <view class="bar__btn bar__btn--visited {{visited ? 'is-on' : ''}}" data-state="visited" bindtap="onScenicMark">
+        <t-icon name="{{visited ? 'check-circle-filled' : 'check-circle'}}" size="34rpx" />
+        <text>去过</text>
+      </view>
+      <view class="bar__btn bar__btn--wish {{wish ? 'is-on' : ''}}" data-state="wish" bindtap="onScenicMark">
+        <t-icon name="{{wish ? 'heart-filled' : 'heart'}}" size="34rpx" />
+        <text>想去</text>
+      </view>
+      <view class="bar__btn {{trip ? 'is-on' : ''}}" bindtap="onTrip">
+        <t-icon name="{{trip ? 'calendar-filled' : 'calendar'}}" size="40rpx" />
+        <text>{{trip ? '改行程' : '加行程'}}</text>
+      </view>
+      <view class="bar__cta {{jumpable ? '' : 'bar__cta--soft'}}" hover-class="tap-hover" bindtap="onTicket">
+        <text>{{ticketLabel}}</text>
+        <t-icon name="arrow-right" size="32rpx" />
+      </view>
+    </view>
+  </view>
+</view>
+
+<trip-sheet
+  visible="{{sheetVisible}}"
+  scenic="{{scenic}}"
+  trip="{{trip}}"
+  bind:close="onSheetClose"
+  bind:saved="onTripSaved"
+/>
+
+<!-- 不能 display:none，否则 SelectorQuery 得不到尺寸；透明置于页面下层，不影响交互。 -->
+<canvas wx:if="{{scenic}}" type="2d" id="scenicSharePoster" class="share-poster-canvas"></canvas>

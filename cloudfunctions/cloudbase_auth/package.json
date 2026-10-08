@@ -1,0 +1,11 @@
+{
+  "name": "cloudbase-auth",
+  "version": "1.0.0",
+  "main": "index.js",
+  "engines": {
+    "node": ">=16"
+  },
+  "dependencies": {
+    "wx-server-sdk": "~3.0.1"
+  }
+}

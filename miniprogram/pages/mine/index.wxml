@@ -1,0 +1,97 @@
+<page-header />
+
+<view class="page px">
+  <!-- 资料卡 -->
+  <view class="profile" hover-class="tap-hover" bindtap="toProfile">
+    <view class="profile__avatar">
+      <image wx:if="{{profile.avatarUrl}}" src="{{profile.avatarUrl}}" mode="aspectFill" class="profile__img" />
+      <t-icon wx:else name="user" size="52rpx" />
+    </view>
+    <view class="profile__info">
+      <text class="profile__name">{{profile ? (profile.nickName || '旅行者') : '登录拾景'}}</text>
+      <text class="profile__sub">
+        {{profile ? syncText : '同步收藏、浏览历史与行程，换手机也不丢'}}
+      </text>
+    </view>
+    <view wx:if="{{!profile}}" class="profile__btn">{{logging ? '登录中' : '一键登录'}}</view>
+    <t-icon wx:else name="chevron-right" size="36rpx" color="#B9BBB6" />
+  </view>
+
+  <!-- 概览 -->
+  <view class="stats">
+    <view class="stats__item" bindtap="toTrips">
+      <text class="stats__v num">{{stats.trips}}</text>
+      <text class="stats__k">行程</text>
+    </view>
+    <view class="stats__item" bindtap="toFavorites">
+      <text class="stats__v num">{{stats.favs}}</text>
+      <text class="stats__k">收藏</text>
+    </view>
+    <view class="stats__item" bindtap="toFootprints">
+      <text class="stats__v num">{{stats.footprints}}</text>
+      <text class="stats__k">浏览历史</text>
+    </view>
+  </view>
+
+  <!-- 抢票指南 -->
+  <view class="banner" hover-class="tap-hover" bindtap="toTicketTips">
+    <view class="banner__text">
+      <text class="eyebrow banner__eyebrow">GUIDE</text>
+      <text class="banner__title">热门景区抢票，提前做完这 6 件事</text>
+    </view>
+    <view class="banner__icon"><t-icon name="ticket" size="40rpx" /></view>
+  </view>
+
+  <!-- 菜单 -->
+  <view class="menu menu--account card">
+    <view class="menu-account__item" hover-class="menu-account__item--hover" bindtap="toProfile">
+      <view class="menu-account__icon"><t-icon name="user-circle" size="34rpx" color="#4B504D" /></view>
+      <text class="menu-account__text">头像与昵称</text>
+      <view class="menu-account__arrow"><t-icon name="chevron-right" size="30rpx" color="#B9BBB6" /></view>
+    </view>
+    <view class="menu-account__divider"></view>
+    <view class="menu-account__item" hover-class="menu-account__item--hover" bindtap="toFootprints">
+      <view class="menu-account__icon"><t-icon name="time" size="34rpx" color="#4B504D" /></view>
+      <text class="menu-account__text">浏览历史</text>
+      <view class="menu-account__arrow"><t-icon name="chevron-right" size="30rpx" color="#B9BBB6" /></view>
+    </view>
+    <view class="menu-account__divider"></view>
+    <button class="menu-account__button" hover-class="menu-account__button--hover" open-type="share">
+      <view class="menu-account__item">
+        <view class="menu-account__icon"><t-icon name="share" size="34rpx" color="#4B504D" /></view>
+        <text class="menu-account__text">转发拾景小程序</text>
+        <view class="menu-account__arrow"><t-icon name="chevron-right" size="30rpx" color="#B9BBB6" /></view>
+      </view>
+    </button>
+    <view class="menu-account__divider"></view>
+    <button class="menu-account__button" hover-class="menu-account__button--hover" open-type="feedback">
+      <view class="menu-account__item">
+        <view class="menu-account__icon"><t-icon name="chat" size="34rpx" color="#4B504D" /></view>
+        <text class="menu-account__text">意见反馈 · 补充景区</text>
+        <view class="menu-account__arrow"><t-icon name="chevron-right" size="30rpx" color="#B9BBB6" /></view>
+      </view>
+    </button>
+    <view class="menu-account__divider"></view>
+    <view class="menu-account__item" hover-class="menu-account__item--hover" bindtap="toAbout">
+      <view class="menu-account__icon"><t-icon name="info-circle" size="34rpx" color="#4B504D" /></view>
+      <text class="menu-account__text">关于与免责声明</text>
+      <view class="menu-account__arrow"><t-icon name="chevron-right" size="30rpx" color="#B9BBB6" /></view>
+    </view>
+  </view>
+
+  <view class="menu card">
+    <view class="menu__item" hover-class="menu__item--hover" bindtap="onClear">
+      <t-icon name="delete" size="38rpx" />
+      <text class="menu__text">清除本机数据</text>
+    </view>
+    <view wx:if="{{profile}}" class="menu__item" hover-class="menu__item--hover" bindtap="onLogout">
+      <t-icon name="logout" size="38rpx" />
+      <text class="menu__text">退出登录</text>
+    </view>
+  </view>
+
+  <view class="foot">
+    <text class="foot__brand">{{appName}}</text>
+    <text>所有功能免费 · 不参与售票 · 不收取任何费用</text>
+  </view>
+</view>

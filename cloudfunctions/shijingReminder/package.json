@@ -1,0 +1,9 @@
+{
+  "name": "shijing-reminder",
+  "version": "1.0.0",
+  "description": "行程与建议预约日订阅消息登记、取消及定时发送",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~3.0.1"
+  }
+}

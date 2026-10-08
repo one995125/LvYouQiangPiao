@@ -1,0 +1,32 @@
+<view class="rp card">
+  <view class="rp__head">
+    <view>
+      <text class="rp__eyebrow">RESERVATION</text>
+      <text class="rp__title">预约时间计算</text>
+    </view>
+    <t-icon name="time" size="42rpx" color="#2F5A51" />
+  </view>
+
+  <block wx:if="{{supported}}">
+    <picker mode="date" value="{{date || today}}" start="{{today}}" bindchange="onDate">
+      <view class="rp__picker {{date ? '' : 'is-empty'}}">
+        <t-icon name="calendar" size="30rpx" />
+        <text>{{date || '选择计划游玩日期'}}</text>
+        <t-icon name="chevron-right" size="30rpx" />
+      </view>
+    </picker>
+
+    <view wx:if="{{plan}}" class="rp__result rp__result--{{plan.state}}">
+      <text class="rp__result-label">建议预约日</text>
+      <text class="rp__result-date num">{{plan.bookingDate}}</text>
+      <text wx:if="{{plan.releaseTime}}" class="rp__result-time">{{plan.releaseTime}}</text>
+      <text class="rp__result-state">{{plan.stateText}} · 提前 {{plan.advanceDays}} 天</text>
+      <text class="rp__clear" bindtap="onClear">重新选择</text>
+    </view>
+  </block>
+
+  <view wx:else class="rp__unsupported">
+    <text>该景区尚未录入明确的提前预约天数，暂时无法准确计算。</text>
+    <text>请先参考上方预约说明，并以景区官方公告为准。</text>
+  </view>
+</view>

@@ -1,0 +1,100 @@
+<t-popup visible="{{visible}}" placement="bottom" bind:visible-change="onVisibleChange">
+  <view class="ts">
+    <view class="ts__handle"></view>
+    <text class="eyebrow">{{editing ? 'EDIT TRIP' : 'ADD TO TRIP'}}</text>
+    <view class="ts__title">{{scenic.name}}</view>
+    <text class="ts__sub">{{scenic.city}} · 放票规则会一并保存，方便下次回来继续抢</text>
+
+    <view class="ts__field">
+      <text class="ts__label">计划日期</text>
+      <view class="ts__date">
+        <picker mode="date" value="{{date || today}}" start="{{today}}" bindchange="onDate">
+          <view class="ts__date-value {{date ? '' : 'is-empty'}}">
+            <t-icon name="calendar" size="32rpx" />
+            <text>{{date || '暂未确定，先占个位'}}</text>
+          </view>
+        </picker>
+        <text wx:if="{{date}}" class="ts__clear" bindtap="onClearDate">清除</text>
+      </view>
+    </view>
+
+    <view wx:if="{{reservationPlan}}" class="ts__plan ts__plan--{{reservationPlan.state}}">
+      <t-icon name="notification" size="30rpx" />
+      <view>
+        <text>建议预约：{{reservationPlan.bookingDate}}{{reservationPlan.releaseTime ? ' ' + reservationPlan.releaseTime : ''}}</text>
+        <text>{{reservationPlan.stateText}}</text>
+      </view>
+    </view>
+
+    <!-- 未配置、无地点或请求失败时 weather 始终为空，整个区域完全不渲染。 -->
+    <view wx:if="{{weather}}" class="ts__weather">
+      <text class="ts__weather-mark">天气</text>
+      <view class="ts__weather-copy">
+        <text>目的地天气</text>
+        <text>{{weather.summary}}</text>
+      </view>
+    </view>
+
+    <view class="ts__field">
+      <text class="ts__label">游玩时段</text>
+      <view class="seg seg--period">
+        <view
+          wx:for="{{periodList}}"
+          wx:key="key"
+          class="seg__item {{period === item.key ? 'is-active' : ''}}"
+          data-key="{{item.key}}"
+          bindtap="onPeriod"
+        >{{item.label}}</view>
+      </view>
+    </view>
+
+    <view class="ts__field">
+      <text class="ts__label">当前状态</text>
+      <view class="seg">
+        <view
+          wx:for="{{statusList}}"
+          wx:key="key"
+          class="seg__item {{status === item.key ? 'is-active' : ''}}"
+          data-key="{{item.key}}"
+          bindtap="onStatus"
+        >{{item.label}}</view>
+      </view>
+    </view>
+
+    <view class="ts__field">
+      <text class="ts__label">备注</text>
+      <input
+        class="ts__input"
+        value="{{note}}"
+        maxlength="60"
+        placeholder="如：约了 3 人 · 周五 20:00 放票"
+        placeholder-class="ts__placeholder"
+        bindinput="onNote"
+      />
+    </view>
+
+    <view class="ts__field">
+      <text class="ts__label">出行准备（可多选）</text>
+      <view class="checks">
+        <view
+          wx:for="{{checklistOptions}}"
+          wx:key="label"
+          class="check {{item.selected ? 'is-selected' : ''}}"
+          data-label="{{item.label}}"
+          bindtap="onChecklist"
+        >
+          <t-icon name="{{item.selected ? 'check-circle-filled' : 'circle'}}" size="28rpx" />
+          <text>{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{scenic.booking}}" class="ts__rule">
+      <t-icon name="time" size="30rpx" />
+      <text>{{scenic.booking}}</text>
+    </view>
+
+    <view class="btn-primary ts__btn" hover-class="tap-hover" bindtap="onSave">{{editing ? '保存修改' : '加入我的行程'}}</view>
+    <view class="safe-bottom"></view>
+  </view>
+</t-popup>

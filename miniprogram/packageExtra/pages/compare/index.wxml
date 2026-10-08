@@ -1,0 +1,27 @@
+<page-header back title="景区对比" />
+
+<view class="page page--plain compare">
+  <view wx:if="{{loading}}" class="compare__loading">正在整理对比数据……</view>
+  <empty-state wx:elif="{{columns.length < 2}}" icon="chart-bar" title="至少选择 2 个景区" desc="返回景区列表，点击对比图标加入" />
+
+  <scroll-view wx:else scroll-x enhanced show-scrollbar="{{false}}" class="compare__scroll">
+    <view class="table" style="width: {{tableWidth}}rpx">
+      <view class="table__head">
+        <view class="table__corner">对比项</view>
+        <view wx:for="{{columns}}" wx:key="_id" class="table__column table__column--head">
+          <view class="table__remove" data-id="{{item._id}}" catchtap="onRemove"><t-icon name="close" size="24rpx" /></view>
+          <text class="table__name" data-id="{{item._id}}" bindtap="onOpen">{{item.name}}</text>
+          <text class="table__city">{{item.city}}</text>
+          <view class="table__action" data-index="{{index}}" bindtap="onTicket">查看官方渠道</view>
+        </view>
+      </view>
+
+      <view wx:for="{{rows}}" wx:key="label" class="table__row">
+        <view class="table__label">{{item.label}}</view>
+        <view wx:for="{{item.values}}" wx:for-item="value" wx:key="index" class="table__column table__value">{{value}}</view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view wx:if="{{columns.length >= 2}}" class="compare__note">票价、开放时间和预约规则仅供参考，请以景区官方公告为准。</view>
+</view>

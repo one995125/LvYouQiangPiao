@@ -1,0 +1,27 @@
+<view wx:if="{{visible}}" class="export-layer" bindtap="onClose">
+  <view class="export-sheet" catchtap="noop">
+    <view class="export-sheet__handle"></view>
+    <view class="export-sheet__head">
+      <view class="export-sheet__heading">
+        <text class="eyebrow">PLAIN TEXT</text>
+        <text class="export-sheet__title">{{title}}</text>
+      </view>
+      <view class="export-sheet__close" hover-class="tap-hover" bindtap="onClose">
+        <t-icon name="close" size="34rpx" />
+      </view>
+    </view>
+    <text class="export-sheet__desc">{{description}}</text>
+
+    <!-- selectable 兼容旧基础库，user-select 让较新基础库支持更自然的长按选取。 -->
+    <scroll-view class="export-sheet__preview" scroll-y enhanced show-scrollbar="{{false}}">
+      <text class="export-sheet__text" selectable="{{true}}" user-select="{{true}}">{{text}}</text>
+    </scroll-view>
+
+    <button class="btn-primary export-sheet__copy" hover-class="tap-hover" bindtap="onCopy">
+      <t-icon name="file-copy" size="30rpx" />
+      <text>复制全部文本</text>
+    </button>
+    <text class="export-sheet__hint">复制失败时，可直接长按上方文字手动选择。</text>
+    <view class="safe-bottom"></view>
+  </view>
+</view>

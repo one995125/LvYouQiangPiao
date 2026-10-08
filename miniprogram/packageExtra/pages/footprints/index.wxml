@@ -1,0 +1,43 @@
+<page-header back title="浏览历史" />
+
+<view class="page page--plain footprints">
+  <view class="px footprints__hero">
+    <view class="display footprints__title"><text>看过的景区</text><text>都留在这里</text></view>
+    <text class="footprints__intro">进入景区详情后自动记录；再次浏览会更新时间并回到最前面。</text>
+
+    <view class="footprints__summary card">
+      <view class="footprints__count">
+        <text class="footprints__count-number num">{{count}}</text>
+        <view class="footprints__count-copy">
+      <text>条浏览历史</text>
+          <text class="footprints__count-sub">最多保留最近 200 处</text>
+        </view>
+      </view>
+      <button wx:if="{{count}}" class="footprints__clear" hover-class="footprints__clear--hover" bindtap="onClear">
+        <t-icon name="delete" size="28rpx" />
+        <text>清空</text>
+      </button>
+    </view>
+    <text class="footprints__sync">{{syncText}}</text>
+  </view>
+
+  <view class="px footprints__list">
+<empty-state wx:if="{{!items.length}}" icon="location" title="还没有浏览历史" desc="打开任意景区详情后，这里会自动保留最近一次浏览记录。">
+      <view class="btn-ghost footprints__discover" bindtap="toDiscover">去发现景区</view>
+    </empty-state>
+
+    <view wx:for="{{items}}" wx:key="id" class="footprint-card card" hover-class="tap-hover" data-id="{{item.scenicId}}" bindtap="onOpen">
+      <view class="footprint-card__cover">
+        <tone-cover tone="{{item.tone || 'jade'}}" src="{{item.cover}}" radius="24rpx" />
+      </view>
+      <view class="footprint-card__body">
+        <text class="footprint-card__title">{{item.scenicName}}</text>
+        <text class="footprint-card__place">{{item.provinceName}}{{item.city ? ' · ' + item.city : ''}}</text>
+        <text class="footprint-card__time">{{item.timeLabel}}浏览</text>
+      </view>
+      <view class="footprint-card__arrow"><t-icon name="chevron-right" size="30rpx" color="#B9BBB6" /></view>
+    </view>
+
+<view wx:if="{{items.length}}" class="footprints__more">{{hasMore ? '继续下滑，查看更早的浏览历史' : '— 已展示全部浏览历史 —'}}</view>
+  </view>
+</view>

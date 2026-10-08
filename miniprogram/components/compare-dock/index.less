@@ -1,0 +1,37 @@
+.dock {
+  position: fixed;
+  left: 50%;
+  bottom: calc(28rpx + env(safe-area-inset-bottom));
+  z-index: 80;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  height: 78rpx;
+  padding: 0 12rpx;
+  border-radius: 999rpx;
+  background: rgba(30, 32, 31, 0.94);
+  color: var(--paper);
+  box-shadow: var(--shadow-float);
+}
+.dock--tabbed {
+  bottom: calc(154rpx + env(safe-area-inset-bottom));
+}
+.dock__clear {
+  width: 54rpx;
+  height: 54rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+.dock__main {
+  display: flex;
+  align-items: center;
+  padding: 0 20rpx 0 14rpx;
+  white-space: nowrap;
+  font-size: 24rpx;
+}
+.dock__main text {
+  margin-left: 8rpx;
+}

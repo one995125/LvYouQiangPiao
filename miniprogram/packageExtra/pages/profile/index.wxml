@@ -1,0 +1,27 @@
+<page-header back title="头像与昵称" />
+
+<view class="page page--plain px wrap">
+  <button class="avatar" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar" hover-class="tap-hover">
+    <image wx:if="{{avatarUrl}}" class="avatar__img" src="{{avatarUrl}}" mode="aspectFill" />
+    <t-icon wx:else name="user" size="80rpx" />
+    <view class="avatar__edit"><t-icon name="image" size="26rpx" /></view>
+  </button>
+  <text class="hint">点击更换头像</text>
+
+  <view class="field">
+    <text class="field__label">昵称</text>
+    <input
+      class="field__input"
+      type="nickname"
+      value="{{nickName}}"
+      maxlength="20"
+      placeholder="输入或选择微信昵称"
+      placeholder-class="ph"
+      bindinput="onNickInput"
+      bindblur="onNickBlur"
+    />
+  </view>
+
+  <view class="btn-primary save" hover-class="tap-hover" bindtap="onSave">{{saving ? '保存中…' : '保存'}}</view>
+  <text class="privacy">头像与昵称仅用于你的个人资料展示，不会作为公开攻略署名。我们不会收集手机号、位置等其他个人信息。</text>
+</view>

@@ -1,0 +1,60 @@
+<page-header back solid="{{solid}}" title="{{solid ? catLabel : ''}}" />
+
+<view wx:if="{{loading}}" class="loading"><t-loading theme="dots" size="40rpx" /></view>
+<empty-state wx:elif="{{notFound}}" icon="error-circle" title="攻略暂不可用" desc="该内容可能已下架，或不属于拾景整理的资料" />
+
+<view wx:else class="page page--plain article">
+  <view class="px">
+    <view class="meta-top">
+      <text class="chip {{guide.category === 'avoid' ? 'chip--cinnabar' : 'chip--jade'}}">{{catLabel}}</text>
+      <text class="meta-top__place">{{place}}</text>
+    </view>
+    <text class="title">{{guide.title}}</text>
+
+    <view class="author">
+      <view class="author__avatar author__avatar--empty"><t-icon name="book-open" size="32rpx" /></view>
+      <view class="author__info">
+        <view class="author__name">
+          <text>拾景编辑部</text>
+          <text class="author__official">官方发布</text>
+        </view>
+        <text class="author__time">{{time}}</text>
+      </view>
+    </view>
+
+    <view class="content">
+      <block wx:for="{{guide.blocks}}" wx:key="index">
+        <text wx:if="{{item.type === 'h'}}" class="c-h">{{item.text}}</text>
+        <text wx:elif="{{item.type === 'p'}}" class="c-p" user-select>{{item.text}}</text>
+        <view wx:elif="{{item.type === 'tip'}}" class="c-tip">
+          <t-icon name="lightbulb" size="32rpx" />
+          <text>{{item.text}}</text>
+        </view>
+        <view wx:elif="{{item.type === 'warn'}}" class="c-warn">
+          <t-icon name="error-circle" size="32rpx" color="#B0513B" />
+          <text>{{item.text}}</text>
+        </view>
+      </block>
+    </view>
+
+    <view wx:if="{{scenic}}" class="related">
+      <text class="related__label">文中景区 · 官方购票直达</text>
+      <scenic-card scenic="{{scenic}}" variant="compact" />
+    </view>
+
+    <view class="note">本篇由拾景编辑整理发布，不代表景区官方意见；出行前请以景区官方公告为准</view>
+  </view>
+
+  <view class="bar">
+    <view class="bar__inner">
+      <view class="bar__btn {{fav ? 'is-fav' : ''}}" bindtap="onFav">
+        <t-icon name="{{fav ? 'bookmark-filled' : 'bookmark'}}" size="38rpx" />
+        <text>{{fav ? '已收藏' : '收藏'}}</text>
+      </view>
+      <button class="bar__share" open-type="share" hover-class="tap-hover">
+        <t-icon name="share" size="32rpx" />
+        <text>转发本篇资料</text>
+      </button>
+    </view>
+  </view>
+</view>

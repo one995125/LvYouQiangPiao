@@ -1,0 +1,79 @@
+<page-header back solid="{{solid}}" title="{{solid ? '攻略' : ''}}" />
+
+<view class="page page--plain">
+  <view class="px head">
+    <text class="eyebrow">SCENIC GUIDE</text>
+    <text class="display">攻略与避雷</text>
+    <text class="head__sub">全部内容由拾景编辑整理发布，实际预约规则请以景区官方公告为准</text>
+    <view class="scope">
+      <view class="scope__item {{scopeLocal ? '' : 'is-active'}}" data-local="0" bindtap="onScope">全国</view>
+      <view class="scope__item {{scopeLocal ? 'is-active' : ''}}" data-local="1" bindtap="onScope">{{provinceName}}</view>
+    </view>
+
+    <view class="guide-search">
+      <t-icon name="search" size="32rpx" />
+      <input
+        class="guide-search__input"
+        value="{{keyword}}"
+        confirm-type="search"
+        maxlength="40"
+        placeholder="搜索标题、摘要、正文或景区名"
+        placeholder-class="guide-search__placeholder"
+        bindinput="onSearchInput"
+        bindconfirm="onSearchConfirm"
+      />
+      <view wx:if="{{keyword}}" class="guide-search__clear" bindtap="onClearSearch"><t-icon name="close" size="26rpx" /></view>
+    </view>
+
+    <view wx:if="{{!keyword && history.length}}" class="guide-history">
+      <view class="guide-history__head"><text>最近搜索</text><text bindtap="onClearHistory">清空</text></view>
+      <view class="guide-history__items">
+        <text wx:for="{{history}}" wx:key="*this" class="guide-history__item" data-keyword="{{item}}" bindtap="onHistory">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <scroll-view wx:if="{{tagOptions.length}}" scroll-x class="guide-tags" enhanced show-scrollbar="{{false}}">
+    <view class="guide-tags__inner">
+      <view class="guide-tag {{!tag ? 'is-active' : ''}}" data-tag="" bindtap="onTagFilter">全部标签</view>
+      <view wx:for="{{tagOptions}}" wx:key="*this" class="guide-tag {{tag === item ? 'is-active' : ''}}" data-tag="{{item}}" bindtap="onTagFilter"># {{item}}</view>
+    </view>
+  </scroll-view>
+
+  <scroll-view scroll-x class="cats" enhanced show-scrollbar="{{false}}">
+    <view class="cats__inner">
+      <view
+        wx:for="{{categories}}"
+        wx:key="key"
+        class="cat {{category === item.key ? 'is-active' : ''}} {{item.key === 'avoid' ? 'cat--avoid' : ''}}"
+        data-key="{{item.key}}"
+        bindtap="onCategory"
+      >{{item.label}}</view>
+    </view>
+  </scroll-view>
+
+  <view class="px list">
+    <block wx:if="{{loading}}">
+      <view class="skeleton"></view>
+      <view class="skeleton"></view>
+      <view class="skeleton"></view>
+    </block>
+    <view wx:elif="{{loadError}}" class="guide-error">
+      <empty-state icon="error-circle" title="资料暂时无法加载" desc="请检查网络后重试，已下架内容不会从本机资料恢复" />
+      <view class="guide-error__retry" bindtap="onRetry">重新加载</view>
+    </view>
+    <empty-state
+      wx:elif="{{!list.length}}"
+      icon="{{appliedKeyword || tag ? 'search' : 'book-open'}}"
+      title="{{emptyTitle}}"
+      desc="{{emptyDesc}}"
+    />
+    <block wx:else>
+      <view wx:for="{{list}}" wx:key="_id" class="list__item fade-in">
+        <guide-card guide="{{item}}" />
+      </view>
+      <view wx:if="{{loadMoreError}}" class="more more--retry" bindtap="onRetryMore">加载失败，点击重试</view>
+      <view wx:else class="more">{{loadingMore ? '加载中…' : hasMore ? '' : '— 已经到底了 —'}}</view>
+    </block>
+  </view>
+</view>

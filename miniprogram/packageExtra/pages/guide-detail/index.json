@@ -1,0 +1,7 @@
+{
+  "enableShareTimeline": true,
+  "usingComponents": {
+    "t-loading": "tdesign-miniprogram/loading/loading",
+    "scenic-card": "/components/scenic-card/index"
+  }
+}

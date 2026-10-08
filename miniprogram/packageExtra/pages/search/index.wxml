@@ -1,0 +1,67 @@
+<page-header back title="搜索" />
+
+<view class="page page--plain px">
+  <view class="bar">
+    <t-icon name="search" size="34rpx" />
+    <input
+      class="bar__input"
+      value="{{keyword}}"
+      focus
+      confirm-type="search"
+      placeholder="景区、城市、拼音或标签"
+      placeholder-class="bar__ph"
+      bindinput="onInput"
+      bindconfirm="onConfirm"
+    />
+    <view wx:if="{{keyword}}" class="bar__clear" bindtap="onClearInput">
+      <t-icon name="close" size="28rpx" />
+    </view>
+  </view>
+
+  <block wx:if="{{!searched}}">
+    <view class="group group--quick">
+      <view class="group__head">
+        <text class="group__title">快速筛选</text>
+        <text class="muted group__sub">按特色查找</text>
+      </view>
+      <view class="tags">
+        <text wx:for="{{quickTags}}" wx:key="*this" class="tag tag--quick" data-kw="{{item}}" bindtap="onTag">{{item}}</text>
+      </view>
+    </view>
+
+    <view wx:if="{{history.length}}" class="group">
+      <view class="group__head">
+        <text class="group__title">最近搜索</text>
+        <t-icon name="delete" size="32rpx" color="#8D918D" bindtap="onClearHistory" />
+      </view>
+      <view class="tags">
+        <text wx:for="{{history}}" wx:key="*this" class="tag" data-kw="{{item}}" bindtap="onTag">{{item}}</text>
+      </view>
+    </view>
+
+    <view class="group">
+      <view class="group__head">
+        <text class="group__title">全国热门</text>
+        <text class="muted group__sub">按热度指数</text>
+      </view>
+      <view wx:for="{{hot}}" wx:key="_id" class="item">
+        <scenic-card scenic="{{item}}" rank="{{index + 1}}" variant="compact" />
+      </view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="result-head muted">找到 {{results.length}} 处相关景区</view>
+    <view wx:for="{{results}}" wx:key="_id" class="item fade-in">
+      <scenic-card scenic="{{item}}" variant="compact" />
+    </view>
+    <empty-state
+      wx:if="{{!results.length && !loading}}"
+      icon="search"
+      title="没有找到「{{keyword}}」"
+      desc="试试城市、拼音、景区别名或特色标签"
+    />
+  </block>
+</view>
+
+<compare-dock />

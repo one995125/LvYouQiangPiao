@@ -1,0 +1,17 @@
+<page-header back title="资料维护中心" />
+<view class="page page--plain px admin">
+  <text class="eyebrow">SCENIC DATA · ADMIN</text>
+  <text class="admin__title">景区资料维护</text>
+  <text class="admin__hint">仅显示云端资料。保存时会检查版本，避免覆盖其他管理员的新修改。</text>
+  <view wx:if="{{error}}" class="card admin__error">{{error}}</view>
+  <block wx:if="{{authorized}}">
+    <input class="card admin__search" placeholder="搜索已加载的景区或城市" value="{{keyword}}" bindinput="onSearch" />
+    <view wx:for="{{visible}}" wx:key="_id" class="card admin__row" data-id="{{item._id}}" bindtap="onEdit">
+      <view><text class="admin__name">{{item.name}}</text><text class="admin__meta">{{item.city}} · 更新 {{item.updatedAt || '待核验'}}</text></view>
+      <text class="admin__arrow">编辑 ›</text>
+    </view>
+    <text wx:if="{{!loading && !list.length && !error}}" class="admin__empty">云端暂无景区资料，请先完成安全初始化。</text>
+    <text wx:if="{{loading}}" class="admin__empty">正在读取云端资料…</text>
+    <view wx:if="{{hasMore && !loading}}" class="btn-ghost admin__more" bindtap="onMore">加载更多</view>
+  </block>
+</view>

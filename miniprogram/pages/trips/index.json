@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "trip-sheet": "/components/trip-sheet/index",
+    "export-sheet": "/components/export-sheet/index"
+  }
+}

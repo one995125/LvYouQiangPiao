@@ -1,0 +1,9 @@
+{
+  "name": "shijing-correction",
+  "version": "1.0.0",
+  "description": "景区资料纠错（OpenID 隔离、限频、内容安全检测）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~3.0.1"
+  }
+}

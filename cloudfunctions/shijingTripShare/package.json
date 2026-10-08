@@ -1,0 +1,9 @@
+{
+  "name": "shijing-trip-share",
+  "version": "1.0.0",
+  "description": "行程只读分享快照的生成、读取与撤销",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~3.0.1"
+  }
+}

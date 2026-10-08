@@ -1,0 +1,75 @@
+<!-- 榜首大卡 -->
+<view wx:if="{{variant === 'feature'}}" class="sf" hover-class="tap-hover" bindtap="onOpen">
+  <view class="sf__cover">
+    <tone-cover tone="{{scenic.tone || ''}}" src="{{scenic.cover || ''}}" radius="40rpx">
+      <view class="sf__inner">
+        <view class="sf__top">
+          <text class="sf__badge">No.{{rankText}}</text>
+          <view class="sf__tools">
+            <view class="sf__fav {{comparing ? 'is-compare' : ''}}" catchtap="onCompare">
+              <t-icon name="chart-bar" size="34rpx" />
+            </view>
+            <view class="sf__fav" catchtap="onFav">
+              <t-icon name="{{fav ? 'star-filled' : 'star'}}" size="36rpx" />
+            </view>
+          </view>
+        </view>
+        <view class="sf__bottom">
+          <text class="sf__alias">{{scenic.alias}}</text>
+          <text class="sf__name">{{scenic.name}}</text>
+          <text class="sf__meta">{{scenic.city}} · {{scenic.level || scenic.category}} · {{scenic.duration}}</text>
+          <text wx:if="{{alertText}}" class="sf__alert">{{alertText}}</text>
+        </view>
+      </view>
+    </tone-cover>
+  </view>
+  <view class="sf__bar">
+    <view class="sf__stats">
+      <view wx:for="{{stats}}" wx:key="k" class="stat {{item.on ? 'is-on' : ''}}">
+        <text class="stat__v num">{{item.v}}</text>
+        <text class="stat__k">{{item.k}}</text>
+      </view>
+    </view>
+    <view class="buy" hover-class="tap-hover" catchtap="onTicket">
+      <t-icon name="ticket" size="30rpx" />
+      <text class="buy__text">{{ticketText}}</text>
+    </view>
+  </view>
+</view>
+
+<!-- 榜单行 / 紧凑 -->
+<view wx:else class="sr {{variant === 'compact' ? 'sr--compact' : ''}}" hover-class="tap-hover" bindtap="onOpen">
+  <view class="sr__cover">
+    <tone-cover tone="{{scenic.tone || ''}}" src="{{scenic.cover || ''}}" radius="26rpx">
+      <view class="sr__cover-inner">
+        <text wx:if="{{rankText}}" class="sr__rank num">{{rankText}}</text>
+        <text class="sr__cat">{{scenic.category}}</text>
+      </view>
+    </tone-cover>
+  </view>
+  <view class="sr__body">
+    <view class="sr__head">
+      <text class="sr__name">{{scenic.name}}</text>
+      <text wx:if="{{scenic.level}}" class="sr__level">{{scenic.level}}</text>
+      <text wx:if="{{alertText}}" class="sr__alert">{{alertText}}</text>
+    </view>
+    <text class="sr__meta">{{scenic.city}} · {{scenic.duration}}</text>
+    <view class="sr__stats">
+      <text wx:for="{{stats}}" wx:key="k" class="sr__stat {{item.on ? 'is-on' : ''}}">
+        <text class="num">{{item.v}}</text> {{item.k}}
+      </text>
+    </view>
+    <view class="sr__foot">
+      <text class="sr__price num">{{priceText}}<text wx:if="{{scenic.price > 0}}" class="sr__price-unit"> 起</text></text>
+      <view class="sr__actions">
+        <view class="icon-btn {{comparing ? 'is-compare' : ''}}" catchtap="onCompare">
+          <t-icon name="chart-bar" size="32rpx" />
+        </view>
+        <view class="icon-btn {{fav ? 'is-on' : ''}}" catchtap="onFav">
+          <t-icon name="{{fav ? 'star-filled' : 'star'}}" size="34rpx" />
+        </view>
+        <view class="buy buy--sm" hover-class="tap-hover" catchtap="onTicket">{{ticketText}}</view>
+      </view>
+    </view>
+  </view>
+</view>

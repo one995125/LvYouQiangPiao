@@ -1,0 +1,7 @@
+<view wx:if="{{count}}" class="dock {{tabbed ? 'dock--tabbed' : ''}}">
+  <view class="dock__clear" catchtap="onClear"><t-icon name="close" size="26rpx" /></view>
+  <view class="dock__main" bindtap="onGo">
+    <t-icon name="chart-bar" size="30rpx" />
+    <text>已选 {{count}}/3 · {{count >= 2 ? '开始对比' : '再选 1 个'}}</text>
+  </view>
+</view>

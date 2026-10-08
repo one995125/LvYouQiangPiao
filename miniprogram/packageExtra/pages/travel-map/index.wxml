@@ -1,0 +1,76 @@
+<page-header back title="我的旅行地图" />
+
+<view class="travel-map-page fade-page">
+  <view class="stats">
+    <view class="stat-card">
+      <view class="stat-card__number">{{litCount}}<text> /34</text></view>
+      <text class="stat-card__label">已点亮省份</text>
+    </view>
+    <view class="stat-card">
+      <view class="stat-card__number">{{visitedScenicCount}}</view>
+      <text class="stat-card__label">去过景区</text>
+    </view>
+    <view class="stat-card">
+      <view class="stat-card__number">{{wishScenicCount}}</view>
+      <text class="stat-card__label">想去景区</text>
+    </view>
+  </view>
+
+  <view class="map-card">
+    <svg class="china-map" viewBox="0 0 680 481" aria-label="中国省级行政区旅行地图">
+      <path
+        wx:for="{{provinces}}"
+        wx:key="code"
+        class="province-path {{item.bounce ? 'is-bouncing' : ''}}"
+        d="{{item.path}}"
+        fill="{{item.fill}}"
+        stroke="{{item.stroke}}"
+        stroke-width="{{item.strokeWidth}}"
+        stroke-dasharray="{{item.dash}}"
+        stroke-linejoin="round"
+        stroke-linecap="round"
+        data-code="{{item.code}}"
+        bindtap="onProvinceTap"
+      />
+      <rect class="inset-box" x="566" y="294" width="106" height="178" rx="6" />
+      <path class="inset-islands" d="{{insetIslandPath}}" />
+      <path wx:for="{{nineDashPaths}}" wx:key="*this" class="nine-dash" d="{{item}}" />
+      <text class="inset-title" x="619" y="468" text-anchor="middle">南海诸岛</text>
+      <text wx:if="{{selectedCode}}" class="selected-label" x="{{labelX}}" y="{{labelY}}" text-anchor="middle">{{selectedName}}</text>
+    </svg>
+
+    <view class="legend">
+      <view class="legend__item"><view class="legend__swatch legend__swatch--visited"></view><text>去过（实线框）</text></view>
+      <view class="legend__item"><view class="legend__swatch legend__swatch--wish"></view><text>想去（虚线框）</text></view>
+      <view class="legend__item"><view class="legend__swatch legend__swatch--none"></view><text>未点亮</text></view>
+    </view>
+    <!-- TODO: 替换为含审图号的标准地图服务数据后，同步更新此声明。 -->
+    <view class="map-note">地图底图仅作示意，非标准地图</view>
+  </view>
+</view>
+
+<view wx:if="{{panelVisible}}" class="sheet-mask" bindtap="closePanel"></view>
+<view class="province-sheet {{panelVisible ? 'province-sheet--open' : ''}}">
+  <view class="sheet-grab"></view>
+  <view class="sheet-close" bindtap="closePanel">×</view>
+  <view class="sheet-title">
+    <text>{{selectedName}}</text>
+    <text class="sheet-title__sub">{{selectedSlogan}}</text>
+  </view>
+  <view class="state-toggle">
+    <button class="state-button {{selectedState === 'visited' ? 'state-button--visited' : ''}}" data-state="visited" bindtap="onMarkProvince">✓ 去过</button>
+    <button class="state-button {{selectedState === 'wish' ? 'state-button--wish' : ''}}" data-state="wish" bindtap="onMarkProvince">♡ 想去</button>
+  </view>
+  <view wx:if="{{scenicLoading}}" class="sheet-copy">正在读取拾景已收录景区…</view>
+  <block wx:elif="{{provinceScenics.length}}">
+    <view class="sheet-copy">拾景已收录 {{provinceScenics.length}} 个{{selectedName}}景区，点名称可直接查看详情与官方入口。</view>
+    <scroll-view scroll-y class="scenic-list">
+      <view class="scenic-chips">
+        <view wx:for="{{provinceScenics}}" wx:key="_id" class="scenic-chip" data-id="{{item._id}}" bindtap="onOpenScenic">{{item.name}}</view>
+      </view>
+    </scroll-view>
+  </block>
+  <view wx:else class="sheet-empty">拾景暂未收录{{selectedName}}景区。你仍可先点亮这里，后续资料会继续补充。</view>
+</view>
+
+<view class="bottom-stat">已点亮 <text>{{litCount}}</text>/34 省 · 去过 <text>{{visitedScenicCount}}</text> 个景区 · 想去 <text>{{wishScenicCount}}</text> 个景区</view>

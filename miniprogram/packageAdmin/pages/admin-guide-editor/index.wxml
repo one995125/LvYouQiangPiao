@@ -1,0 +1,41 @@
+<page-header back title="编辑攻略" />
+<view class="page page--plain px guide-editor">
+  <text class="eyebrow">SHIJING · EDITORIAL</text>
+  <text class="guide-editor__title">{{id ? '编辑攻略' : '新建攻略'}}</text>
+  <text class="guide-editor__hint">资料由拾景管理员整理。新稿先存为草稿，核对后再单独发布；游客不能投稿。</text>
+  <view wx:if="{{error}}" class="guide-editor__error">{{error}}</view>
+  <text wx:if="{{loading}}" class="guide-editor__loading">正在验证身份并读取云端资料…</text>
+  <block wx:elif="{{authorized}}">
+    <view class="card guide-editor__section">
+      <text class="guide-editor__section-title">基本信息</text>
+      <view class="guide-field"><text>标题（4–80 字）</text><input value="{{draft.title}}" data-key="title" bindinput="onField" maxlength="80" placeholder="准确描述本篇内容" /></view>
+      <view class="guide-field"><text>摘要（10–240 字）</text><textarea value="{{draft.summary}}" data-key="summary" bindinput="onField" maxlength="240" auto-height placeholder="概括读者将获得的信息" /></view>
+      <view class="guide-field"><text>分类</text><picker range="{{categories}}" value="{{categoryIndex}}" data-kind="category" bindchange="onChoice"><view class="guide-field__pick">{{categories[categoryIndex]}} ›</view></picker></view>
+      <view class="guide-field"><text>地域</text><picker range="{{provinces}}" value="{{provinceIndex}}" data-kind="province" bindchange="onChoice"><view class="guide-field__pick">{{provinces[provinceIndex]}} ›</view></picker></view>
+      <view class="guide-field"><text>封面色调</text><picker range="{{tones}}" value="{{toneIndex}}" data-kind="tone" bindchange="onChoice"><view class="guide-field__pick">{{tones[toneIndex]}} ›</view></picker></view>
+      <view class="guide-field"><text>关联景区 ID（可选）</text><input value="{{draft.scenicId}}" data-key="scenicId" bindinput="onField" maxlength="64" placeholder="仅填写已收录景区的准确 ID" /></view>
+      <view class="guide-field"><text>关联景区名称（可选）</text><input value="{{draft.scenicName}}" data-key="scenicName" bindinput="onField" maxlength="80" placeholder="与景区资料中的名称一致" /></view>
+      <view class="guide-field">
+        <text>标签（可选，最多 10 个，每个最多 16 字）</text>
+        <input value="{{tagsText}}" bindinput="onTagsInput" maxlength="240" placeholder="例如：预约、亲子、两日游（逗号或顿号分隔）" />
+        <text class="guide-field__help">保存时会自动去空、去重；标签用于游客端筛选和搜索。</text>
+      </view>
+    </view>
+    <view class="card guide-editor__section">
+      <text class="guide-editor__section-title">正文段落</text>
+      <text class="guide-editor__hint">至少 1 段，最多 30 段。时间、票价和预约规则请以官方公告复核；不要填写未证实的信息。</text>
+      <view wx:for="{{draft.blocks}}" wx:key="index" class="guide-editor__block">
+        <view class="guide-editor__block-head"><text>第 {{index + 1}} 段</text><text class="guide-editor__remove" data-index="{{index}}" bindtap="onRemoveBlock">移除</text></view>
+        <picker range="{{blockTypes}}" value="{{blockTypeIndexes[index]}}" data-index="{{index}}" bindchange="onBlockType"><view class="guide-field__pick">{{blockTypes[blockTypeIndexes[index]]}} ›</view></picker>
+        <textarea value="{{item.text}}" data-index="{{index}}" bindinput="onBlockText" maxlength="1000" auto-height placeholder="输入这一段的内容" />
+      </view>
+      <view class="guide-editor__add" bindtap="onAddBlock">＋ 添加段落</view>
+    </view>
+    <view class="guide-editor__actions">
+      <view class="btn-primary" bindtap="onSave">{{saving ? '处理中…' : id ? '保存正文修改' : '保存为草稿'}}</view>
+      <view wx:if="{{id}}" class="btn-ghost" bindtap="onStatus">{{status === 'approved' ? '下架攻略' : '核对后发布'}}</view>
+      <view wx:if="{{id && status === 'approved' && !dirty}}" class="btn-ghost" bindtap="onPreview">查看游客端页面</view>
+    </view>
+    <text wx:if="{{id}}" class="guide-editor__version">{{status === 'approved' ? '已发布' : '未公开'}} · 云端版本 {{revision}}{{dirty ? ' · 有未保存修改' : ''}}</text>
+  </block>
+</view>

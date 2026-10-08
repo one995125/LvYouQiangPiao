@@ -1,0 +1,8 @@
+<view class="es">
+  <view class="es__icon">
+    <t-icon name="{{icon}}" size="56rpx" />
+  </view>
+  <text class="es__title">{{title}}</text>
+  <text wx:if="{{desc}}" class="es__desc">{{desc}}</text>
+  <view class="es__slot"><slot /></view>
+</view>

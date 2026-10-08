@@ -1,0 +1,9 @@
+{
+  "name": "shijing-log",
+  "version": "1.0.0",
+  "description": "拾景客户端脱敏错误日志的限频写入",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~3.0.1"
+  }
+}

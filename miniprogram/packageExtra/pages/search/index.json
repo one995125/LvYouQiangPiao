@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "scenic-card": "/components/scenic-card/index",
+    "compare-dock": "/components/compare-dock/index"
+  }
+}

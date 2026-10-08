@@ -1,0 +1,106 @@
+.compare {
+  padding: 24rpx 0 60rpx;
+}
+.compare__loading {
+  padding: 120rpx 40rpx;
+  text-align: center;
+  color: var(--ink-3);
+  font-size: 25rpx;
+}
+.compare__scroll {
+  width: 100%;
+}
+.table {
+  margin: 0 32rpx;
+  overflow: hidden;
+  border-radius: 28rpx;
+  background: var(--card);
+  box-shadow: var(--shadow-soft);
+}
+.table__head,
+.table__row {
+  display: flex;
+}
+.table__head {
+  background: var(--ink);
+  color: var(--paper);
+}
+.table__corner,
+.table__label {
+  flex: none;
+  width: 168rpx;
+  box-sizing: border-box;
+  padding: 24rpx 20rpx;
+}
+.table__corner {
+  display: flex;
+  align-items: center;
+  font-size: 23rpx;
+  opacity: 0.72;
+}
+.table__column {
+  position: relative;
+  flex: none;
+  width: 286rpx;
+  box-sizing: border-box;
+  padding: 24rpx;
+  border-left: 1rpx solid rgba(255, 255, 255, 0.12);
+}
+.table__column--head {
+  min-height: 210rpx;
+}
+.table__remove {
+  position: absolute;
+  right: 14rpx;
+  top: 14rpx;
+  width: 44rpx;
+  height: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+}
+.table__name,
+.table__city {
+  display: block;
+}
+.table__name {
+  padding-right: 28rpx;
+  font-size: 31rpx;
+  font-weight: 600;
+}
+.table__city {
+  margin-top: 6rpx;
+  font-size: 21rpx;
+  opacity: 0.65;
+}
+.table__action {
+  display: inline-flex;
+  margin-top: 24rpx;
+  padding: 10rpx 16rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.12);
+  font-size: 21rpx;
+}
+.table__row:nth-child(even) {
+  background: var(--paper);
+}
+.table__label {
+  color: var(--ink-3);
+  font-size: 23rpx;
+  font-weight: 500;
+}
+.table__value {
+  border-left-color: var(--line);
+  color: var(--ink-2);
+  font-size: 23rpx;
+  line-height: 1.6;
+}
+.compare__note {
+  margin: 30rpx 40rpx 0;
+  color: var(--ink-4);
+  font-size: 21rpx;
+  line-height: 1.6;
+  text-align: center;
+}

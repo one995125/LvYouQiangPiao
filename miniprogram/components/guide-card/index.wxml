@@ -1,0 +1,23 @@
+<view class="gc" hover-class="tap-hover" bindtap="onOpen">
+  <view class="gc__main">
+    <view class="gc__cat gc__cat--{{guide.category}}">
+      <view class="gc__dot"></view>
+      <text>{{catLabel}}</text>
+      <text class="gc__place">· {{place}}</text>
+    </view>
+    <text class="gc__title">{{guide.title}}</text>
+    <text class="gc__summary">{{guide.summary}}</text>
+    <view class="gc__meta">
+      <text class="gc__author">拾景整理</text>
+      <text class="gc__sep">·</text>
+      <text>{{time}}</text>
+    </view>
+  </view>
+  <view class="gc__thumb">
+    <tone-cover tone="{{guide.tone || ''}}" radius="24rpx">
+      <view class="gc__thumb-inner">
+        <t-icon name="{{guide.category === 'avoid' ? 'error-circle' : guide.category === 'ticket' ? 'ticket' : guide.category === 'route' ? 'map' : guide.category === 'food' ? 'shop' : 'book-open'}}" size="44rpx" />
+      </view>
+    </tone-cover>
+  </view>
+</view>

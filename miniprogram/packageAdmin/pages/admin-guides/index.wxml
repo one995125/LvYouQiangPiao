@@ -1,0 +1,23 @@
+<page-header back title="攻略维护" />
+<view class="page page--plain px admin-guides">
+  <text class="eyebrow">SHIJING · EDITORIAL</text>
+  <text class="admin-guides__title">拾景攻略</text>
+  <text class="admin-guides__hint">仅管理员可整理和发布。草稿不会出现在游客端；下架后原分享链接也不可读取。</text>
+  <view wx:if="{{authorized}}" class="btn-primary admin-guides__new" bindtap="onNew">＋ 新建攻略草稿</view>
+  <view wx:if="{{authorized}}" class="admin-guides__tabs">
+    <view class="admin-guides__tab {{status === 'pending' ? 'is-active' : ''}}" data-status="pending" bindtap="onTab">草稿 / 已下架</view>
+    <view class="admin-guides__tab {{status === 'approved' ? 'is-active' : ''}}" data-status="approved" bindtap="onTab">已发布</view>
+  </view>
+  <view wx:if="{{error}}" class="card admin-guides__error" bindtap="onRetry">{{error}}（点击重试）</view>
+  <view wx:if="{{authorized}}" wx:for="{{list}}" wx:key="_id" class="card admin-guides__row" data-id="{{item._id}}" bindtap="onEdit">
+    <text class="admin-guides__name">{{item.title}}</text>
+    <text class="admin-guides__summary">{{item.summary}}</text>
+    <view wx:if="{{item.tags && item.tags.length}}" class="admin-guides__tags">
+      <text wx:for="{{item.tags}}" wx:key="*this" class="admin-guides__tag">{{item}}</text>
+    </view>
+    <text class="admin-guides__meta">版本 {{item.contentRevision || 0}} · {{item.status === 'approved' ? '已发布' : '未公开'}} · 编辑 ›</text>
+  </view>
+  <text wx:if="{{loading}}" class="admin-guides__empty">正在读取云端攻略…</text>
+  <text wx:elif="{{authorized && !list.length && !error}}" class="admin-guides__empty">当前没有{{status === 'approved' ? '已发布攻略' : '草稿'}}</text>
+  <view wx:if="{{hasMore && !loading}}" class="btn-ghost admin-guides__more" bindtap="onMore">加载更多</view>
+</view>

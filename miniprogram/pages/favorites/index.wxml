@@ -1,0 +1,69 @@
+<page-header title="我的收藏" />
+
+<view class="page favorites">
+  <view class="px favorites__hero">
+    <text class="eyebrow">MY PLACES</text>
+    <view class="display favorites__title"><text>把想去的地方</text><text>收进来</text></view>
+    <text class="favorites__intro">收藏景区，想出发时一搜就找到。</text>
+    <view class="favorites__count card">
+      <text class="favorites__count-number num">{{counts.scenic}}</text>
+      <view class="favorites__count-copy">
+        <text>处景区已收藏</text>
+        <text class="favorites__count-sub">你的私人景区清单，随时可以继续添加</text>
+      </view>
+      <t-icon name="star-filled" size="42rpx" />
+    </view>
+    <text class="favorites__sync">{{syncText}}</text>
+    <button class="favorites__export" hover-class="tap-hover" bindtap="onOpenExport">
+      <t-icon name="file-copy" size="28rpx" />
+      <text>导出全部收藏</text>
+    </button>
+  </view>
+
+  <view class="px favorites__tools">
+    <view class="favorites__search">
+      <t-icon name="search" size="32rpx" />
+      <input value="{{keyword}}" placeholder="搜索已收藏的景区、城市" confirm-type="search" bindinput="onInput" />
+      <view wx:if="{{keyword}}" class="favorites__clear" bindtap="onClearSearch"><t-icon name="close-circle" size="30rpx" /></view>
+    </view>
+    <view class="favorites__filters">
+      <view class="favorites__chip {{kind === 'scenic' ? 'is-active' : ''}}" data-kind="scenic" bindtap="onKind">景区 {{counts.scenic}}</view>
+      <view class="favorites__chip {{kind === 'guide' ? 'is-active' : ''}}" data-kind="guide" bindtap="onKind">攻略 {{counts.guide}}</view>
+      <view class="favorites__sort" bindtap="onSort">{{recentFirst ? '最近收藏' : '最早收藏'}} <t-icon name="swap" size="26rpx" /></view>
+    </view>
+    <text class="favorites__matched">{{keyword ? '找到 ' + matchedCount + ' 条匹配收藏' : '共 ' + matchedCount + ' 条' + (kind === 'scenic' ? '景区收藏' : '攻略收藏')}}</text>
+  </view>
+
+  <view class="px favorites__list">
+    <empty-state wx:if="{{!visibleItems.length}}" icon="star" title="{{emptyTitle}}" desc="{{emptyDesc}}">
+      <view wx:if="{{!keyword}}" class="btn-ghost favorites__discover" bindtap="onDiscover">{{kind === 'scenic' ? '去发现景区' : '去看攻略'}}</view>
+      <view wx:else class="btn-ghost favorites__discover" bindtap="onClearSearch">清除搜索</view>
+    </empty-state>
+
+    <view wx:for="{{visibleItems}}" wx:key="id" class="favorite-card card" data-id="{{item.id}}" bindtap="onOpen">
+      <view class="favorite-card__cover">
+        <tone-cover tone="{{item.tone || 'jade'}}" radius="24rpx" ridge="{{false}}">
+          <view class="favorite-card__cover-icon"><t-icon name="{{item.type === 'scenic' ? 'location' : 'book-open'}}" size="40rpx" /></view>
+        </tone-cover>
+      </view>
+      <view class="favorite-card__body">
+        <text class="favorite-card__kind">{{item.kindLabel}}</text>
+        <text class="favorite-card__title">{{item.title}}</text>
+        <text class="favorite-card__meta">{{item.subtitle || '资料待补充'}}{{item.savedDate ? ' · 收藏于 ' + item.savedDate : ''}}</text>
+      </view>
+      <view class="favorite-card__remove" data-id="{{item.id}}" catchtap="onRemove"><t-icon name="star-filled" size="34rpx" /></view>
+    </view>
+
+    <view wx:if="{{visibleItems.length}}" class="favorites__more">{{hasMore ? '继续下滑，查看更早的收藏' : '— 已展示全部收藏 —'}}</view>
+  </view>
+</view>
+
+<export-sheet
+  visible="{{exportVisible}}"
+  title="收藏备份文本"
+  description="已按收藏时间整理全部收藏。可点击复制全部，也可长按下方文本手动选择。"
+  text="{{exportText}}"
+  kind="favorites"
+  item-count="{{exportItemCount}}"
+  bind:close="onCloseExport"
+/>

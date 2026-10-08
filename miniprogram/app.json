@@ -1,0 +1,78 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/favorites/index",
+    "pages/trips/index",
+    "pages/mine/index",
+    "pages/guides/index",
+    "pages/scenic/index"
+  ],
+  "subPackages": [
+    {
+      "root": "packageAdmin",
+      "pages": [
+        "pages/admin/index",
+        "pages/admin-editor/index",
+        "pages/admin-guides/index",
+        "pages/admin-guide-editor/index"
+      ]
+    },
+    {
+      "root": "packageExtra",
+      "pages": [
+        "pages/compare/index",
+        "pages/correction/index",
+        "pages/trip-share/index",
+        "pages/about/index",
+        "pages/profile/index",
+        "pages/search/index",
+        "pages/guide-detail/index",
+        "pages/footprints/index",
+        "pages/travel-map/index"
+      ]
+    }
+  ],
+  "window": {
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#F4F1EA",
+    "backgroundColor": "#F4F1EA",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#9A9D98",
+    "selectedColor": "#1E201F",
+    "backgroundColor": "#FDFCF9",
+    "list": [
+      { "pagePath": "pages/home/index", "text": "发现" },
+      { "pagePath": "pages/favorites/index", "text": "收藏" },
+      { "pagePath": "pages/trips/index", "text": "行程" },
+      { "pagePath": "pages/mine/index", "text": "我的" }
+    ]
+  },
+  "usingComponents": {
+    "t-icon": "tdesign-miniprogram/icon/icon",
+    "page-header": "/components/page-header/index",
+    "empty-state": "/components/empty-state/index",
+    "tone-cover": "/components/tone-cover/index"
+  },
+  "requiredPrivateInfos": ["getLocation"],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于按直线距离展示离你最近的景区"
+    }
+  },
+  "rendererOptions": {
+    "skyline": {
+      "defaultDisplayBlock": true,
+      "disableABTest": true,
+      "sdkVersionBegin": "3.0.0",
+      "sdkVersionEnd": "15.255.255"
+    }
+  },
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "style": "v2"
+}

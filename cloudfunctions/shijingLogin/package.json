@@ -1,0 +1,9 @@
+{
+  "name": "shijing-login",
+  "version": "1.0.0",
+  "description": "拾景登录：返回 openid 并维护 shijing_users 集合",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~3.0.1"
+  }
+}

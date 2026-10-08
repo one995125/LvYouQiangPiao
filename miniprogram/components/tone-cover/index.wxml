@@ -1,0 +1,12 @@
+<view class="tc {{extClass}}" style="{{bg}} border-radius: {{radius}};">
+  <block wx:if="{{!src && ridge}}">
+    <view class="tc__sun"></view>
+    <view class="tc__ridge tc__ridge--1"></view>
+    <view class="tc__ridge tc__ridge--2"></view>
+    <view class="tc__ridge tc__ridge--3"></view>
+  </block>
+  <image wx:if="{{src}}" class="tc__img" src="{{src}}" mode="aspectFill" lazy-load />
+  <view class="tc__slot">
+    <slot />
+  </view>
+</view>

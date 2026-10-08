@@ -1,0 +1,9 @@
+{
+  "name": "shijing-init-data",
+  "version": "1.0.0",
+  "description": "管理员：导入内置景区与攻略数据",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~3.0.1"
+  }
+}

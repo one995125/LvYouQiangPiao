@@ -1,0 +1,34 @@
+{
+  "name": "shijing-miniprogram",
+  "version": "1.0.0",
+  "description": "拾景 · 景区官方购票入口聚合小程序",
+  "scripts": {
+    "typecheck": "npx -p typescript@5 tsc -p tsconfig.check.json",
+    "check:tickets": "node tools/check-ticket-channels.js",
+    "check:ticket-policy": "node tools/check-ticket-policy.js",
+    "check:favorites": "node tools/check-favorites.js",
+    "check:footprints": "node tools/check-footprints.js",
+    "check:home-revisit": "node tools/check-home-revisit.js",
+    "check:reminder": "node tools/check-reminder.js",
+    "check:trip-share": "node tools/check-trip-share.js",
+    "check:share": "node tools/check-share.js",
+    "check:location": "node tools/check-scenic-location.js",
+    "check:weather": "node tools/check-weather.js",
+    "check:export": "node tools/check-export.js",
+    "check:analytics": "node tools/check-analytics.js",
+    "check:subpackages": "node tools/check-subpackages.js",
+    "check:travel-map": "node tools/check-travel-map.js",
+    "check:user-sync": "node tools/check-user-data-resilience.js",
+    "check:cloudfunctions": "node --check cloudfunctions/shijingUserData/index.js && node --check cloudfunctions/shijingReminder/index.js && node --check cloudfunctions/shijingTripShare/index.js && node --check cloudfunctions/shijingGuide/index.js && node --check cloudfunctions/shijingCorrection/index.js && node --check cloudfunctions/shijingInitData/index.js && node --check cloudfunctions/shijingAdmin/index.js && node --check cloudfunctions/shijingLog/index.js && node tools/check-user-data-cloud.js && node tools/check-reminder.js && node tools/check-trip-share.js && node tools/check-admin-cloud.js && node tools/check-guide-editorial.js",
+    "check": "npm run typecheck && npm run check:cloudfunctions && npm run check:user-sync && npm run check:tickets && npm run check:ticket-policy && npm run check:favorites && npm run check:footprints && npm run check:home-revisit && npm run check:location && npm run check:share && npm run check:weather && npm run check:export && npm run check:analytics && npm run check:subpackages && npm run check:travel-map"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "tdesign-miniprogram": "^1.10.1"
+  },
+  "devDependencies": {
+    "miniprogram-api-typings": "^2.8.3-1"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "enableShareTimeline": true,
+  "usingComponents": {
+    "guide-card": "/components/guide-card/index"
+  },
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "shijing-user-data",
+  "version": "1.0.0",
+  "description": "收藏与行程云端存取（按 openid 隔离）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~3.0.1"
+  }
+}

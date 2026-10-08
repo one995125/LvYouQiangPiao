@@ -1,0 +1,53 @@
+<page-header back title="资料纠错" />
+
+<view class="page page--plain px correction">
+  <view wx:if="{{submitted}}" class="success card">
+    <view class="success__icon"><t-icon name="check-circle-filled" size="72rpx" /></view>
+    <text class="success__title">已收到，谢谢你</text>
+    <text class="success__desc">这条反馈不会公开展示。我们会在核对景区官方信息后更新资料。</text>
+    <view class="btn-primary success__btn" bindtap="onBack">返回景区</view>
+  </view>
+
+  <block wx:else>
+    <view class="intro card">
+      <text class="intro__label">当前景区</text>
+      <text class="intro__name">{{scenicName || '未指定景区'}}</text>
+      <text class="intro__desc">请告诉我们哪里有误。反馈仅用于人工核对，不会直接公开。</text>
+    </view>
+
+    <view class="field">
+      <text class="field__label">问题类型</text>
+      <view class="types">
+        <view
+          wx:for="{{types}}"
+          wx:key="key"
+          class="type {{type === item.key ? 'is-active' : ''}}"
+          data-key="{{item.key}}"
+          bindtap="onType"
+        >{{item.label}}</view>
+      </view>
+    </view>
+
+    <view class="field">
+      <text class="field__label">问题说明</text>
+      <textarea
+        class="field__textarea"
+        value="{{description}}"
+        maxlength="500"
+        placeholder="例如：官方小程序已改名，当前入口无法打开……"
+        placeholder-class="field__placeholder"
+        bindinput="onDescription"
+      />
+      <text class="field__count">{{description.length}}/500</text>
+    </view>
+
+    <view class="privacy">
+      <t-icon name="lock-on" size="28rpx" />
+      <text>不需要填写手机号、身份证号等个人信息。</text>
+    </view>
+
+    <view class="btn-primary submit {{canSubmit ? '' : 'is-disabled'}}" bindtap="onSubmit">
+      {{submitting ? '提交中…' : '提交纠错'}}
+    </view>
+  </block>
+</view>

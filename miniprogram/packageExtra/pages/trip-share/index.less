@@ -1,0 +1,113 @@
+.loading {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.share-page {
+  overflow: hidden;
+}
+.share-hero {
+  padding-top: 34rpx;
+}
+.share-hero__title {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16rpx;
+}
+.share-hero__meta {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20rpx;
+  color: var(--ink-3);
+  font-size: 22rpx;
+  line-height: 1.7;
+}
+.share-list {
+  margin-top: 28rpx;
+}
+.share-trip {
+  display: flex;
+  margin-top: 20rpx;
+  padding: 26rpx;
+  border-radius: 32rpx;
+}
+.share-trip__date {
+  flex: none;
+  width: 158rpx;
+  min-height: 116rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 18rpx;
+  border-radius: 24rpx;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 23rpx;
+  font-variant-numeric: tabular-nums;
+}
+.share-trip__period {
+  margin-top: 6rpx;
+  color: var(--jade);
+  font-size: 21rpx;
+}
+.share-trip__body {
+  flex: 1;
+  min-width: 0;
+  margin-left: 24rpx;
+}
+.share-trip__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.share-trip__name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 30rpx;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.share-trip__status {
+  flex: none;
+  margin-left: 12rpx;
+  padding: 3rpx 14rpx;
+  border-radius: 999rpx;
+  background: var(--paper-deep);
+  color: var(--ink-3);
+  font-size: 19rpx;
+}
+.share-trip__status--pending {
+  background: var(--gold-soft);
+  color: var(--gold);
+}
+.share-trip__status--booked {
+  background: var(--jade-soft);
+  color: var(--jade);
+}
+.share-trip__note,
+.share-trip__checklist {
+  display: block;
+  margin-top: 10rpx;
+  color: var(--ink-3);
+  font-size: 22rpx;
+  line-height: 1.55;
+}
+.share-trip__checklist {
+  color: var(--jade);
+}
+.read-only-note {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 30rpx;
+  color: var(--ink-3);
+  font-size: 22rpx;
+  line-height: 1.65;
+}
+.read-only-note text {
+  flex: 1;
+  margin-left: 10rpx;
+}

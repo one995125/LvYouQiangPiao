@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "openapi": ["subscribeMessage.send"]
+  },
+  "triggers": [
+    {
+      "name": "shijing-reminder-daily-0900",
+      "type": "timer",
+      "config": "0 0 9 * * * *"
+    }
+  ]
+}

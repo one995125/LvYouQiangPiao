@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "同行行程",
+  "enableShareTimeline": true,
+  "usingComponents": {
+    "t-loading": "tdesign-miniprogram/loading/loading"
+  }
+}

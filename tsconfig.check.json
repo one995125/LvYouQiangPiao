@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": { "skipLibCheck": true, "noEmit": true },
+  "include": ["./typings/**/*.d.ts", "./miniprogram/**/*.ts"],
+  "exclude": ["node_modules", "./miniprogram/miniprogram_npm"]
+}

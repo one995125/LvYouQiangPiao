@@ -1,0 +1,17 @@
+<view class="tabbar">
+  <view class="tabbar__inner">
+    <view
+      wx:for="{{list}}"
+      wx:key="path"
+      class="tabbar__item {{selected === index ? 'is-active' : ''}}"
+      data-index="{{index}}"
+      bindtap="onTap"
+    >
+      <view class="tabbar__icon">
+        <t-icon name="{{selected === index ? item.active : item.icon}}" size="44rpx" />
+        <view wx:if="{{index === 2 && badge > 0}}" class="tabbar__badge">{{badge > 9 ? '9+' : badge}}</view>
+      </view>
+      <text class="tabbar__text">{{item.text}}</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,10 @@
+{
+  "enableShareTimeline": true,
+  "usingComponents": {
+    "scenic-card": "/components/scenic-card/index",
+    "province-picker": "/components/province-picker/index",
+    "compare-dock": "/components/compare-dock/index"
+  },
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
+}

@@ -1,0 +1,75 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 64rpx;
+}
+.avatar {
+  position: relative;
+  width: 192rpx;
+  height: 192rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  color: var(--ink-3);
+  box-shadow: var(--shadow-soft);
+  overflow: visible;
+}
+.avatar__img {
+  width: 192rpx;
+  height: 192rpx;
+  border-radius: 50%;
+}
+.avatar__edit {
+  position: absolute;
+  right: 4rpx;
+  bottom: 4rpx;
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 0 0 0 6rpx var(--paper);
+}
+.hint {
+  margin-top: 20rpx;
+  font-size: 24rpx;
+  color: var(--ink-3);
+}
+.field {
+  align-self: stretch;
+  margin-top: 64rpx;
+}
+.field__label {
+  display: block;
+  margin-bottom: 16rpx;
+  font-size: 24rpx;
+  color: var(--ink-3);
+}
+.field__input {
+  height: 104rpx;
+  padding: 0 32rpx;
+  border-radius: 28rpx;
+  background: var(--card);
+  font-size: 32rpx;
+  color: var(--ink);
+}
+.ph {
+  color: var(--ink-4);
+}
+.save {
+  align-self: stretch;
+  margin-top: 64rpx;
+}
+.privacy {
+  margin-top: 28rpx;
+  font-size: 22rpx;
+  line-height: 1.7;
+  color: var(--ink-4);
+  text-align: center;
+}

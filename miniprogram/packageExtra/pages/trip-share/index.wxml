@@ -1,0 +1,46 @@
+<page-header back title="同行行程" />
+
+<view wx:if="{{loading}}" class="loading"><t-loading theme="dots" size="40rpx" /></view>
+
+<empty-state
+  wx:elif="{{unavailable || !trips.length}}"
+  icon="calendar"
+  title="这份行程暂时看不到"
+  desc="分享可能已失效、被撤销，或链接不完整。可以请分享者重新生成。"
+/>
+
+<view wx:else class="page page--plain share-page">
+  <view class="px share-hero">
+    <text class="eyebrow">READ-ONLY JOURNEY</text>
+    <view class="display share-hero__title">
+      <text>一起看看</text>
+      <text>这份行程</text>
+    </view>
+    <view class="share-hero__meta">
+      <text>只读快照 · 共 {{trips.length}} 项</text>
+      <text wx:if="{{createdLabel}}">生成于 {{createdLabel}}</text>
+    </view>
+  </view>
+
+  <view class="px share-list">
+    <view wx:for="{{trips}}" wx:key="index" class="share-trip card">
+      <view class="share-trip__date">
+        <text>{{item.date || '日期待定'}}</text>
+        <text class="share-trip__period">{{item.periodLabel}}</text>
+      </view>
+      <view class="share-trip__body">
+        <view class="share-trip__head">
+          <text class="share-trip__name">{{item.scenicName}}</text>
+          <text class="share-trip__status share-trip__status--{{item.status}}">{{item.statusLabel}}</text>
+        </view>
+        <text wx:if="{{item.note}}" class="share-trip__note">备注：{{item.note}}</text>
+        <text wx:if="{{item.checklistText}}" class="share-trip__checklist">准备：{{item.checklistText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="px read-only-note">
+    <t-icon name="lock-on" size="28rpx" />
+    <text>这是分享时生成的只读快照，同行人不能修改或写回原行程。</text>
+  </view>
+</view>

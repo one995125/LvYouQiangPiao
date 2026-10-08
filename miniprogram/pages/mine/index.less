@@ -1,0 +1,223 @@
+.profile {
+  margin-top: 32rpx;
+  display: flex;
+  align-items: center;
+}
+.profile__avatar {
+  flex: none;
+  width: 128rpx;
+  height: 128rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--card);
+  color: var(--ink-3);
+  box-shadow: var(--shadow-soft);
+}
+.profile__img {
+  width: 100%;
+  height: 100%;
+}
+.profile__info {
+  flex: 1;
+  min-width: 0;
+  margin-left: 32rpx;
+  display: flex;
+  flex-direction: column;
+}
+.profile__name {
+  font-size: 44rpx;
+  font-weight: 600;
+  letter-spacing: 1rpx;
+}
+.profile__sub {
+  margin-top: 6rpx;
+  font-size: 24rpx;
+  color: var(--ink-3);
+}
+.profile__btn {
+  flex: none;
+  height: 68rpx;
+  line-height: 68rpx;
+  padding: 0 32rpx;
+  border-radius: 999rpx;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 26rpx;
+}
+
+.stats {
+  margin-top: 48rpx;
+  display: flex;
+  padding: 36rpx 0;
+  border-radius: 36rpx;
+  background: var(--card);
+  box-shadow: var(--shadow-soft);
+}
+.stats__item {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.stats__item + .stats__item::before {
+  position: absolute;
+  top: 10rpx;
+  bottom: 10rpx;
+  left: 0;
+  width: 1rpx;
+  background: var(--line);
+  content: '';
+}
+.stats__v {
+  font-size: 48rpx;
+  font-weight: 600;
+  line-height: 1.2;
+}
+.stats__k {
+  font-size: 22rpx;
+  color: var(--ink-3);
+}
+
+.banner {
+  margin-top: 28rpx;
+  display: flex;
+  align-items: center;
+  padding: 36rpx;
+  border-radius: 36rpx;
+  background: var(--jade);
+  color: var(--paper);
+}
+.banner__text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.banner__eyebrow {
+  color: rgba(244, 241, 234, 0.6);
+}
+.banner__title {
+  margin-top: 8rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+}
+.banner__icon {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.menu {
+  margin-top: 28rpx;
+  padding: 8rpx 0;
+}
+.menu--account {
+  padding: 6rpx 0;
+  overflow: hidden;
+}
+.menu-account__button {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  line-height: normal;
+  text-align: left;
+  overflow: visible;
+}
+.menu-account__button::after {
+  display: none;
+}
+.menu-account__item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 104rpx;
+  padding: 0 28rpx;
+  color: var(--ink-2);
+}
+.menu-account__item--hover,
+.menu-account__button--hover .menu-account__item {
+  background: var(--paper);
+}
+.menu-account__icon {
+  flex: none;
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18rpx;
+  background: var(--paper);
+}
+.menu-account__text {
+  flex: 1;
+  min-width: 0;
+  margin-left: 20rpx;
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 28rpx;
+  line-height: 1.35;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.menu-account__arrow {
+  flex: none;
+  width: 44rpx;
+  height: 56rpx;
+  margin-left: 12rpx;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.menu-account__divider {
+  height: 1rpx;
+  margin: 0 28rpx 0 104rpx;
+  background: var(--line);
+}
+.menu__item {
+  display: flex;
+  align-items: center;
+  height: 112rpx;
+  padding: 0 36rpx;
+  color: var(--ink-2);
+  width: 100%;
+}
+.menu__item--hover {
+  background: var(--paper);
+}
+.menu__text {
+  flex: 1;
+  margin-left: 24rpx;
+  font-size: 28rpx;
+  color: var(--ink);
+  text-align: left;
+}
+
+.foot {
+  margin: 56rpx 0 20rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 22rpx;
+  color: var(--ink-4);
+}
+.foot__brand {
+  font-size: 28rpx;
+  font-weight: 600;
+  letter-spacing: 12rpx;
+  color: var(--ink-3);
+  margin-bottom: 8rpx;
+}

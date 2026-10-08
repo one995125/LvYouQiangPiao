@@ -1,0 +1,13 @@
+<view
+  class="ph {{solid ? 'ph--solid' : ''}} {{theme === 'light' && !solid ? 'ph--clear-light' : ''}}"
+  style="padding-top: {{statusBar}}px;"
+>
+  <view class="ph__bar" style="height: {{navHeight}}px; padding-right: {{menuRight}}px;">
+    <view wx:if="{{back}}" class="ph__back" hover-class="ph__back--hover" bindtap="onBack">
+      <t-icon name="chevron-left" size="44rpx" />
+    </view>
+    <slot name="left" />
+    <view class="ph__title" style="left: {{menuRight}}px; right: {{menuRight}}px;">{{title}}</view>
+  </view>
+</view>
+<view wx:if="{{!overlay}}" style="height: {{statusBar + navHeight}}px;"></view>

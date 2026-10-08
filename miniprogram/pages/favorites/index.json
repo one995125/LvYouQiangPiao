@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "export-sheet": "/components/export-sheet/index"
+  },
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "dark"
+}

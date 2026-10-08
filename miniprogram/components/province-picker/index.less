@@ -1,0 +1,89 @@
+.pp {
+  background: var(--card);
+  border-radius: 40rpx 40rpx 0 0;
+  padding: 20rpx 40rpx 0;
+}
+.pp__handle {
+  width: 72rpx;
+  height: 8rpx;
+  margin: 0 auto 28rpx;
+  border-radius: 999rpx;
+  background: var(--paper-deep);
+}
+.pp__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.pp__title {
+  margin-top: 6rpx;
+  font-size: 44rpx;
+  font-weight: 600;
+  letter-spacing: 2rpx;
+}
+.pp__close {
+  width: 68rpx;
+  height: 68rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--paper);
+  color: var(--ink-2);
+}
+.pp__scroll {
+  height: 62vh;
+  margin-top: 24rpx;
+}
+.pp__group {
+  margin-top: 28rpx;
+}
+.pp__region {
+  font-size: 22rpx;
+  letter-spacing: 4rpx;
+  color: var(--ink-3);
+}
+.pp__grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 16rpx -8rpx 0;
+}
+.pp__item {
+  position: relative;
+  width: calc(25% - 16rpx);
+  margin: 8rpx;
+  height: 88rpx;
+  border-radius: 24rpx;
+  background: var(--paper);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+.pp__name {
+  font-size: 28rpx;
+  color: var(--ink);
+}
+.pp__count {
+  position: absolute;
+  top: 8rpx;
+  right: 14rpx;
+  font-size: 18rpx;
+  color: var(--jade);
+}
+.pp__item.is-empty .pp__name {
+  color: var(--ink-3);
+}
+.pp__item.is-active {
+  background: var(--ink);
+}
+.pp__item.is-active .pp__name,
+.pp__item.is-active .pp__count {
+  color: var(--paper);
+}
+.pp__foot {
+  padding: 40rpx 0 calc(40rpx + env(safe-area-inset-bottom));
+  text-align: center;
+  font-size: 22rpx;
+  color: var(--ink-4);
+}

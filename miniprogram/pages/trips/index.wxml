@@ -1,0 +1,161 @@
+<page-header />
+
+<view class="page">
+  <view class="px head">
+    <text class="eyebrow">MY JOURNEY</text>
+    <view class="head__row">
+      <text class="display">我的行程</text>
+      <button class="share-entry" hover-class="tap-hover" bindtap="onOpenShare">
+        <t-icon name="share" size="30rpx" />
+        <text>分享行程</text>
+      </button>
+    </view>
+    <view class="summary">
+      <view class="summary__item">
+        <text class="summary__v num">{{counts.pending}}</text>
+        <text class="summary__k">待抢票</text>
+      </view>
+      <view class="summary__item">
+        <text class="summary__v num">{{counts.booked}}</text>
+        <text class="summary__k">已购票</text>
+      </view>
+      <view class="summary__item">
+        <text class="summary__v num">{{counts.done}}</text>
+        <text class="summary__k">已出行</text>
+      </view>
+    </view>
+    <view class="head__export-actions">
+      <button class="export-entry" hover-class="tap-hover" bindtap="onExportTrips">
+        <t-icon name="file-copy" size="28rpx" />
+        <text>导出行程</text>
+      </button>
+      <button class="export-entry export-entry--calendar" hover-class="tap-hover" bindtap="onExportCalendar">
+        <t-icon name="calendar" size="28rpx" />
+        <text>日程文本</text>
+      </button>
+    </view>
+    <text class="head__calendar-note">小程序无法直接写入系统日历，将生成可复制的日程文本。</text>
+  </view>
+
+  <!-- 行程 -->
+  <view class="px list">
+    <empty-state
+      wx:if="{{!trips.length}}"
+      icon="calendar"
+      title="还没有行程"
+      desc="在景区详情页点「加行程」，放票规则和官方入口都会存在这里，抢不到也能随时回来再试"
+    >
+      <view class="btn-ghost empty-btn" bindtap="toHome">去发现景区</view>
+    </empty-state>
+
+    <view wx:for="{{trips}}" wx:key="id" class="trip trip--{{item.status}} fade-in">
+      <view class="trip__date" data-id="{{item.id}}" bindtap="onOpenTrip">
+        <block wx:if="{{item.date}}">
+          <text class="trip__month">{{item.month}}</text>
+          <text class="trip__day num">{{item.day}}</text>
+          <text class="trip__week">{{item.week}}</text>
+        </block>
+        <block wx:else>
+          <t-icon name="time" size="40rpx" />
+          <text class="trip__week">待定</text>
+        </block>
+      </view>
+
+      <view class="trip__body">
+        <view class="trip__head" data-id="{{item.id}}" bindtap="onOpenTrip">
+          <text class="trip__name">{{item.scenicName}}</text>
+          <text class="trip__status trip__status--{{item.status}}">{{item.statusLabel}}</text>
+        </view>
+        <text class="trip__meta {{item.urgent ? 'is-urgent' : ''}}">{{item.city}} · {{item.periodLabel}} · {{item.countdown}}</text>
+        <!-- 天气是异步附加信息；为空时不显示加载态、错误态或占位。 -->
+        <view wx:if="{{item.weather}}" class="trip__weather">
+          <text class="trip__weather-label">目的地天气</text>
+          <text class="trip__weather-value">{{item.weather.summary}}</text>
+        </view>
+        <text wx:if="{{item.status === 'pending' && item.booking}}" class="trip__rule">{{item.booking}}</text>
+        <text wx:if="{{item.checklistText}}" class="trip__checklist">准备：{{item.checklistText}}</text>
+        <text wx:if="{{item.note}}" class="trip__note">「{{item.note}}」</text>
+
+        <view class="trip__actions">
+          <view wx:if="{{item.status === 'pending'}}" class="act act--primary" hover-class="tap-hover" data-id="{{item.id}}" bindtap="onTicket">
+            <t-icon name="ticket" size="28rpx" />
+            <text>查看渠道</text>
+          </view>
+          <view wx:if="{{item.status === 'pending'}}" class="act" hover-class="tap-hover" data-id="{{item.id}}" bindtap="onBooked">已抢到</view>
+          <view wx:if="{{item.status === 'booked'}}" class="act" hover-class="tap-hover" data-id="{{item.id}}" bindtap="onTicket">查看渠道</view>
+          <view class="act act--icon" data-id="{{item.id}}" bindtap="onMore">
+            <t-icon name="ellipsis" size="32rpx" />
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+</view>
+
+<trip-sheet
+  visible="{{sheetVisible}}"
+  scenic="{{editScenic}}"
+  trip="{{editTrip}}"
+  bind:close="onSheetClose"
+  bind:saved="onSaved"
+/>
+
+<export-sheet
+  visible="{{exportVisible}}"
+  title="{{exportTitle}}"
+  description="{{exportDescription}}"
+  text="{{exportText}}"
+  calendar="{{exportCalendar}}"
+  kind="{{exportCalendar ? 'system_calendar' : 'trips'}}"
+  item-count="{{exportItemCount}}"
+  bind:close="onCloseExport"
+/>
+
+<!-- 生成快照后才显示微信原生分享按钮；备注、清单默认不勾选。 -->
+<view wx:if="{{shareVisible}}" class="share-layer" bindtap="onCloseShare">
+  <view class="share-sheet" catchtap="noop">
+    <view class="share-sheet__handle"></view>
+    <view class="share-sheet__head">
+      <view>
+        <text class="share-sheet__eyebrow">READ-ONLY SHARE</text>
+        <text class="share-sheet__title">分享只读行程</text>
+      </view>
+      <view class="share-sheet__close" bindtap="onCloseShare"><t-icon name="close" size="34rpx" /></view>
+    </view>
+
+    <text class="share-sheet__desc">默认只分享景区、日期、时段和状态。链接 30 天有效，同行人不能修改你的行程。</text>
+
+    <checkbox-group class="privacy-options" bindchange="onShareOptionsChange">
+      <label class="privacy-option">
+        <view class="privacy-option__copy">
+          <text class="privacy-option__title">允许包含行程备注</text>
+          <text class="privacy-option__hint">可能包含你的个人安排，默认关闭</text>
+        </view>
+        <checkbox value="notes" checked="{{shareIncludeNotes}}" disabled="{{sharePreparing || shareId}}" color="#2f5a51" />
+      </label>
+      <label class="privacy-option">
+        <view class="privacy-option__copy">
+          <text class="privacy-option__title">允许包含出行清单</text>
+          <text class="privacy-option__hint">仅分享已勾选的准备项，默认关闭</text>
+        </view>
+        <checkbox value="checklist" checked="{{shareIncludeChecklist}}" disabled="{{sharePreparing || shareId}}" color="#2f5a51" />
+      </label>
+    </checkbox-group>
+
+    <button wx:if="{{!shareId}}" class="btn-primary share-sheet__primary {{sharePreparing ? 'is-disabled' : ''}}" disabled="{{sharePreparing}}" bindtap="onCreateShare">
+      {{sharePreparing ? '正在同步并生成…' : '生成只读分享'}}
+    </button>
+    <block wx:else>
+      <view class="share-sheet__ready">
+        <t-icon name="check-circle-filled" size="30rpx" color="#2F5A51" />
+        <text>快照已生成，现在可以发给微信好友或群</text>
+      </view>
+      <button class="btn-primary share-sheet__primary" open-type="share" hover-class="tap-hover">
+        <t-icon name="share" size="30rpx" />
+        <text>发给微信好友</text>
+      </button>
+      <button class="share-sheet__revoke" bindtap="onRevokeShare">撤销本次分享</button>
+    </block>
+  </view>
+</view>

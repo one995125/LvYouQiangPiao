@@ -1,0 +1,9 @@
+{
+  "name": "shijing-admin",
+  "version": "1.0.0",
+  "description": "拾景景区资料管理员维护",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~3.0.1"
+  }
+}

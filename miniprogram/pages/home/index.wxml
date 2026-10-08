@@ -1,0 +1,180 @@
+<page-header solid="{{solid}}" title="{{solid ? provinceName + ' · 景区榜单' : ''}}">
+  <view slot="left" class="loc" hover-class="tap-hover" bindtap="openPicker">
+    <t-icon name="location" size="30rpx" />
+    <text class="loc__name">{{provinceName}}</text>
+    <t-icon name="chevron-down" size="28rpx" />
+  </view>
+</page-header>
+
+<view class="page">
+  <!-- 标题区 -->
+  <view class="hero px">
+    <text class="eyebrow">SHIJING · 拾景</text>
+    <text class="display hero__title">{{slogan}}</text>
+    <view class="search" hover-class="tap-hover" bindtap="toSearch">
+      <t-icon name="search" size="34rpx" />
+      <text>搜索景区、城市</text>
+    </view>
+  </view>
+
+  <view class="px">
+    <view class="travel-map-entry" hover-class="tap-hover" bindtap="toTravelMap">
+      <view class="travel-map-entry__copy">
+        <text class="travel-map-entry__title">我的旅行地图</text>
+        <text class="travel-map-entry__summary" wx:if="{{travelMapLitCount}}">已点亮 {{travelMapLitCount}}/34 省 · 去过 {{travelMapVisitedScenicCount}} 个景区</text>
+        <text class="travel-map-entry__summary travel-map-entry__summary--zero" wx:else>从想去的地方开始，点亮第一省</text>
+        <view class="travel-map-progress"><view class="travel-map-progress__value" style="width: {{travelMapProgress}}%;"></view></view>
+        <text class="travel-map-entry__go">点击点亮更多省份 ›</text>
+      </view>
+      <view class="travel-map-dots" aria-label="34省旅行进度点阵">
+        <view
+          wx:for="{{travelMapDots}}"
+          wx:key="code"
+          class="travel-map-dot travel-map-dot--{{item.state}}"
+          style="left: {{item.left}}; top: {{item.top}}; background: {{item.fill}}; border-color: {{item.stroke}};"
+        ></view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 收藏是主路径：无论是否登录，本机已保存的景区都能从这里直接找到。 -->
+  <view class="px">
+    <view class="collection-entry" hover-class="tap-hover" bindtap="toFavorites">
+      <view class="collection-entry__icon"><t-icon name="star-filled" size="36rpx" /></view>
+      <view class="collection-entry__text">
+        <text class="collection-entry__title">我的景区收藏夹</text>
+        <text class="collection-entry__sub">{{favoriteCount ? '已收藏 ' + favoriteCount + ' 处景区，随时找回想去的地方' : '看到想去的景区，点星标先收起来'}}</text>
+      </view>
+      <t-icon name="chevron-right" size="30rpx" />
+    </view>
+  </view>
+
+  <!-- 待抢票提醒：复用词条的入口 -->
+  <view wx:if="{{reminder}}" class="px">
+    <view class="remind fade-in" hover-class="tap-hover" bindtap="toTrips">
+      <view class="remind__dot"></view>
+      <view class="remind__text">
+        <text class="remind__main">{{reminder.count}} 个行程等你抢票</text>
+        <text class="remind__sub">最近：{{reminder.name}} · {{reminder.when}}</text>
+      </view>
+      <t-icon name="chevron-right" size="32rpx" />
+    </view>
+  </view>
+
+  <!-- 最近浏览只消费本地足迹快照；空数组时整个区块不创建，不显示占位卡。 -->
+  <view wx:if="{{recentFootprints.length}}" class="revisit fade-in">
+    <view class="px section-title revisit__title">
+      <view>
+        <text class="section-title__main">继续看看</text>
+        <text class="revisit__hint">最近浏览</text>
+      </view>
+      <text class="section-title__sub" bindtap="toFootprints">全部浏览历史 ›</text>
+    </view>
+    <scroll-view scroll-x class="revisit__scroll" enhanced show-scrollbar="{{false}}">
+      <view class="revisit__inner">
+        <view
+          wx:for="{{recentFootprints}}"
+          wx:key="scenicId"
+          class="revisit-card"
+          hover-class="tap-hover"
+          data-id="{{item.scenicId}}"
+          bindtap="onOpenFootprint"
+        >
+          <view class="revisit-card__cover">
+            <tone-cover tone="{{item.tone || 'jade'}}" src="{{item.cover}}" radius="28rpx" />
+          </view>
+          <text class="revisit-card__name">{{item.scenicName}}</text>
+          <text class="revisit-card__meta">{{item.provinceName}}{{item.city ? ' · ' + item.city : ''}}</text>
+          <text class="revisit-card__time">{{item.timeLabel}}浏览</text>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+
+  <!-- 轻量推荐只使用当前榜单已加载对象；没有可解释偏好时完全不渲染。 -->
+  <view wx:if="{{recommendations.length}}" class="px recommendations fade-in">
+    <view class="section-title recommendations__title">
+      <view>
+        <text class="section-title__main">也许你会喜欢</text>
+        <text class="recommendations__hint">根据本机收藏与浏览历史推荐</text>
+      </view>
+    </view>
+    <view wx:for="{{recommendations}}" wx:key="_id" class="recommendations__item">
+      <scenic-card scenic="{{item}}" sort="heat" variant="compact" />
+    </view>
+  </view>
+
+  <!-- 榜单 -->
+  <view class="px">
+    <view class="section-title">
+      <text class="section-title__main">{{provinceName}}景区榜</text>
+      <text class="section-title__sub">{{sortHint}} · 参考数据</text>
+    </view>
+  </view>
+
+  <scroll-view scroll-x class="sorts" enhanced show-scrollbar="{{false}}">
+    <view class="sorts__inner">
+      <view
+        wx:for="{{sortOptions}}"
+        wx:key="key"
+        class="sort {{sort === item.key ? 'is-active' : ''}}"
+        data-key="{{item.key}}"
+        bindtap="onSort"
+      >{{item.key === 'nearest' && locating ? '定位中…' : item.label}}</view>
+      <view class="sorts__divider"></view>
+      <view class="sort sort--toggle {{only5A ? 'is-on' : ''}}" bindtap="onToggle5A">
+        <t-icon name="{{only5A ? 'check-circle-filled' : 'check-circle'}}" size="28rpx" />
+        <text>5A · 世遗</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="px list">
+    <!-- 加载中骨架 -->
+    <block wx:if="{{loading}}">
+      <view class="skeleton skeleton--feature"></view>
+      <view class="skeleton"></view>
+      <view class="skeleton"></view>
+    </block>
+
+    <empty-state wx:elif="{{error}}" icon="wifi" title="加载失败" desc="网络似乎不太稳定">
+      <view class="btn-ghost retry" bindtap="onRetry">重新加载</view>
+    </empty-state>
+
+    <empty-state
+      wx:elif="{{!feature}}"
+      icon="map"
+      title="{{provinceName}}的景区正在收录"
+      desc="{{only5A ? '可以关闭「5A · 世遗」筛选看看' : '我们正在逐一核验官方购票渠道，先去看看其他省份吧'}}"
+    >
+      <view class="btn-ghost retry" bindtap="openPicker">切换省份</view>
+    </empty-state>
+
+    <block wx:else>
+      <scenic-card class="fade-in" scenic="{{feature}}" rank="{{1}}" sort="{{sort}}" variant="feature" />
+      <view wx:for="{{rest}}" wx:key="_id" class="list__item fade-in">
+        <scenic-card scenic="{{item}}" rank="{{index + 2}}" sort="{{sort}}" />
+      </view>
+      <view wx:if="{{loadingMore}}" class="more">加载中…</view>
+      <view wx:elif="{{!hasMore}}" class="more">— 已收录 {{total}} 处 · 持续更新 —</view>
+    </block>
+  </view>
+
+  <!-- 攻略入口 -->
+  <view class="px">
+    <view class="guide-entry" hover-class="tap-hover" bindtap="toGuides">
+      <view>
+        <text class="eyebrow">BEFORE YOU GO</text>
+        <view class="guide-entry__title">出发前，先读攻略与避雷</view>
+      </view>
+      <view class="guide-entry__arrow">
+        <t-icon name="arrow-right" size="32rpx" />
+      </view>
+    </view>
+    <view class="disclaimer">拾景仅聚合各景区官方购票入口，不参与售票、不收取任何费用。票价与规则以景区官方公布为准。</view>
+  </view>
+</view>
+
+<compare-dock tabbed />
+
+<province-picker visible="{{pickerVisible}}" current="{{province}}" bind:select="onPickProvince" bind:close="closePicker" />

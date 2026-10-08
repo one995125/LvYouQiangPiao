@@ -1,0 +1,9 @@
+{
+  "name": "shijing-guide",
+  "version": "1.0.0",
+  "description": "编辑整理攻略读取与历史投稿本人管理",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~3.0.1"
+  }
+}
